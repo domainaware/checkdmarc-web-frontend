@@ -1,0 +1,34 @@
+<!doctype html data-bs-theme="dark">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{domain}} | {{site_title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+    </style>
+  </head>
+  <body>
+    <main class="container">
+        <h1>{{site_title}}</h1>
+            <div class="row justify-content-center">
+                <h2 class="text-center">{{domain}}</h2>
+                </div>
+                <div class="row justify-content-center">
+                <h3 class="text-center">DNSSEC</h3>
+                <p>DNSSEC provides a way to ensure that the DNS answers a client is receiving from a DNS resolver are correct and have not been tampered with. DNSSEC must be configured at the domain's registrar and nameservers. <a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/" target="_blank">Learn more about how DNSSEC works</a>.</p>
+                {% if results.dnssec %}
+                  <div class="alert alert-success text-center w-auto" role="alert">
+                      DNSSEC is enabled for this domain.
+                  </div>
+                {% else %}
+                  <div class="alert alert-danger text-center w-auto" role="alert">
+                      DNSSEC is not enabled for this domain.
+                  </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -6,7 +6,7 @@ import unicodedata
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, Response
 
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
 
@@ -47,9 +47,15 @@ def normalize_domain(domain: str) -> str:
     return domain.lower()
 
 
-@app.route("/")
-def index():
-    return render_template("index.html", site_title=site_title)
+@app.get("/")
+def show_home():
+    return render_template("index.html.jinja", site_title=site_title)
+
+
+@app.post("/")
+def redirect_to_domain_page():
+    domain = normalize_domain(request.form["domain"])
+    return redirect(f"/domain/{domain}")
 
 
 @app.route("/domain/<domain>")
@@ -58,7 +64,15 @@ def domain(domain):
     get_params = {"api_key": backend_api_key}
     if check_smtp_tls:
         get_params["check_smtp_tls"] = check_smtp_tls
-    results = requests.get(f"{backend_url}/domain/{domain}", params=get_params).json
+    results = requests.get(f"{backend_url}/domain/{domain}", params=get_params).json()
+    if (
+        "error" in results["soa"]
+        and "does not exist" in results["soa"]["error"].lower()
+    ):
+        content = render_template(
+            "domain-does-not-exist.html.jinja", site_title=site_title, domain=domain
+        )
+        return Response(content, status=404)
     return render_template(
-        "domain.html", site_title=site_title, domain=domain, results=results
+        "domain.html.jinja", site_title=site_title, domain=domain, results=results
     )
