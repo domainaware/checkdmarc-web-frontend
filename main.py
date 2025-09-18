@@ -73,6 +73,7 @@ def domain(domain):
             "domain-does-not-exist.html.jinja", site_title=site_title, domain=domain
         )
         return Response(content, status=404)
+
     return render_template(
         "domain.html.jinja", site_title=site_title, domain=domain, results=results
     )
