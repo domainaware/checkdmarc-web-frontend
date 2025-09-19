@@ -1,194 +1,180 @@
-<!doctype html data-bs-theme="dark">
-<html lang="en">
-
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{domain}} | {{site_title}}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-
 <body>
   <div class="container">
     <h1><a href="/" class="text-decoration-none text-reset">{{site_title}}</a></h1>
+
+    <!-- Domain Header -->
     <div class="row">
-      <h2 class="text-center mb-5">{{domain}}</h2>
-    </div>
-    <div class="row">
-      <h3 class="text-center mb-5">Authentication</h3>
-    </div>
-    <div class="row">
-      <div class="col-lg-4">
-        <h4 class="text-center">DNSSEC</h4>
-        <p>DNSSEC provides a way to ensure that the DNS answers a client is receiving from a DNS resolver are correct
-          and
-          have not been tampered with. DNSSEC must be configured at the domain's registrar and nameservers.</p>
-        <p><a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/">Learn more about how
-            DNSSEC works</a>.</p>
-        {% if results.dnssec %}
-        <div class="alert alert-success text-center" role="alert">
-          DNSSEC is enabled for this domain.
-        </div>
-        {% else %}
-        <div class="alert alert-danger text-center" role="alert">
-          DNSSEC is not enabled for this domain.
-        </div>
-        {% endif %}
+      <div class="col-12">
+        <h2 class="text-center mb-5">{{domain}}</h2>
       </div>
+    </div>
+
+    <!-- Authentication Section -->
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mb-5">Authentication</h3>
+      </div>
+    </div>
+
+    <!-- Alerts align right after the Learn more links -->
+    <div id="auth-row" class="row g-4 align-items-start">
+      <!-- DNSSEC -->
       <div class="col-lg-4">
-        <h4 class="text-center">SPF</h4>
-        <p>Sender Policy Framework (SPF) authenticates email by checking the sending email server IP address against a
-          list of domains provided in the envelope from domain. The SPF record can include other records, with up to 10
-          DNS lookups.</p>
-        <p>The SPF standard is defined in <a href="https://www.rfc-editor.org/rfc/rfc7208.html">RFC 7208.</a></p>
-        {% if results.spf.error %}
-        <div class="alert alert-danger text-center" role="alert">
-          {{results.spf.error}}
+        <div class="p-3">
+          <div class="intro mb-3">
+            <h4 class="text-center">DNSSEC</h4>
+            <p>DNSSEC provides a way to ensure that the DNS answers a client is receiving from a DNS resolver are correct
+              and have not been tampered with. DNSSEC must be configured at the domain's registrar and nameservers.</p>
+            <p><a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/">Learn more about how
+                DNSSEC works</a>.</p>
+          </div>
+
+          {% if results.dnssec %}
+          <div class="alert alert-success text-center mb-3" role="alert">
+            DNSSEC is enabled for this domain.
+          </div>
+          {% else %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            DNSSEC is not enabled for this domain.
+          </div>
+          {% endif %}
         </div>
-        {% endif %}
-        {% if results.spf.valid %}
-        <div class="alert alert-success text-center" role="alert">
-          This domain has a valid SPF record.
-        </div>
-        {% endif %}
-        {% if results.spf.record %}
-        <p>Record: <code>{{results.spf.record}}</code></p>
-        {% endif %}
-        {% if results.spf.dns_lookups %}
-        <p>DNS lookups used: {{results.spf.dns_lookups}}/10<br>
-          Void lookups: {{results.spf.dns_void_lookups}}/2
-        </p>
-        {% endif %}
-        {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and
-        results.spf.parsed.redirect.parsed.include|length > 0) %}
-        <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.
-        </p>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <tr>
-              <th scope="col">Domain</th>
-              <th scope="col">DNS lookups</th>
-            </tr>
-            {% for include in results.spf.parsed.include %}
-            <tr>
-              <td>{{include.domain}}</td>
-              <td>{{include.dns_lookups + 1}}</td>
+      </div>
+
+      <!-- SPF -->
+      <div class="col-lg-4">
+        <div class="p-3">
+          <div class="intro mb-3">
+            <h4 class="text-center">SPF</h4>
+            <p>Sender Policy Framework (SPF) authenticates email by checking the sending email server IP address against a
+              list of domains provided in the envelope from domain. The SPF record can include other records, with up to 10
+              DNS lookups.</p>
+            <p>The SPF standard is defined in <a href="https://www.rfc-editor.org/rfc/rfc7208.html">RFC 7208.</a></p>
+          </div>
+
+          {% if results.spf.error %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.spf.error}}
+          </div>
+          {% elif results.spf.valid %}
+          <div class="alert alert-success text-center mb-3" role="alert">
+            This domain has a valid SPF record.
+          </div>
+          {% endif %}
+
+          {% if results.spf.record %}
+          <p>Record: <code>{{results.spf.record}}</code></p>
+          {% endif %}
+
+          {% if results.spf.dns_lookups %}
+          <p>DNS lookups used: {{results.spf.dns_lookups}}/10<br>
+            Void lookups: {{results.spf.dns_void_lookups}}/2
+          </p>
+          {% endif %}
+
+          {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and results.spf.parsed.redirect.parsed.include|length > 0) %}
+          <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.</p>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr>
+                <th scope="col">Domain</th>
+                <th scope="col">DNS lookups</th>
+              </tr>
+              {% for include in results.spf.parsed.include %}
+              <tr>
+                <td>{{include.domain}}</td>
+                <td>{{include.dns_lookups + 1}}</td>
+              </tr>
               {% endfor %}
               {% if results.spf.parsed.redirect %}
-              {% for include in results.spf.parsed.redirect.parsed.include %}
-            <tr>
-              <td>{{include.domain}}</td>
-              <td>{{include.dns_lookups + 1}}</td>
-              {% endfor %}
+                {% for include in results.spf.parsed.redirect.parsed.include %}
+                <tr>
+                  <td>{{include.domain}}</td>
+                  <td>{{include.dns_lookups + 1}}</td>
+                </tr>
+                {% endfor %}
               {% endif %}
-            </tr>
-            {% endif %}
-          </table>
+            </table>
+          </div>
+          {% endif %}
         </div>
       </div>
+
+      <!-- DMARC -->
       <div class="col-lg-4">
-        <h4 class="text-center">DMARC</h4>
-        <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) ensures that the SPF and DKIM
-          authentication mechanisms actually authenticate against the same base domain that the end user sees.</p>
-        <p><a href="https://seanthegeek.net/459/demystifying-dmarc/">Learn more about how DMARC works</a>.</p>
-        {% if results.dmarc.error %}
-        <div class="alert alert-danger text-center" role="alert">
-          {{results.spf.error}}
-        </div>
-        {% endif %}
-        {% if results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in ["reject",
-        "quarantine"] and results.dmarc.tags.sp.value in ["reject", "quarantine"] %}
-        <div class="alert alert-success text-center" role="alert">
-          This domain has an enforced DMARC policy.
-        </div>
-        {% endif %}
-        {% for warning in results.dmarc.warnings %}
-        <div class="alert alert-warning text-center" role="alert">
-          {{warning}}
-        </div>
-        {% endfor %}
-        {% if results.dmarc.record %}
-        <p>Record: <code>{{results.dmarc.record}}</code>
+        <div class="p-3">
+          <div class="intro mb-3">
+            <h4 class="text-center">DMARC</h4>
+            <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) ensures that the SPF and DKIM
+              authentication mechanisms actually authenticate against the same base domain that the end user sees.</p>
+            <p><a href="https://seanthegeek.net/459/demystifying-dmarc/">Learn more about how DMARC works</a>.</p>
+          </div>
+
+          {% if results.dmarc.error %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.dmarc.error}}
+          </div>
+          {% elif results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in ["reject","quarantine"] and results.dmarc.tags.sp.value in ["reject","quarantine"] %}
+          <div class="alert alert-success text-center mb-3" role="alert">
+            This domain has an enforced DMARC policy.
+          </div>
+          {% else %}
+          {% for warning in results.dmarc.warnings %}
+          <div class="alert alert-warning text-center mb-3" role="alert">{{warning}}</div>
+          {% endfor %}
           {% endif %}
-          {% if results.dmarc.location %}
-          <br>Location: <code>{{results.dmarc.location}}</code>
+
+          {% if results.dmarc.record %}
+          <p>Record: <code>{{results.dmarc.record}}</code>
+            {% if results.dmarc.location %}
+            <br>Location: <code>{{results.dmarc.location}}</code>
+            {% endif %}
+          </p>
           {% endif %}
-        </p>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <tr>
-              <th scope="col">Tag</th>
-              <th scope="col">Value</th>
-            </tr>
-            {% for tag, details in results.dmarc.tags.items() %}
-            {% if details.explicit and not tag == "v" %}
-            <tr>
-              <th scope="row">{{tag}}</th>
-              {% if tag in ["rua", "ruf"] %}
-              <td>
-                <ol class="list-unstyled">
-                  {% for entry in details.value %}
-                  <li>
-                  </li>
-                  {{entry.address}}
-                  </li>
-                  {% endfor %}
-                </ol>
-              </td>
-            </tr>
-            {% else %}
-            <td>{{details.value}}</td>
-            {% endif %}
-            </tr>
-            {% endif %}
-            {% endfor %}
-          </table>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr><th scope="col">Tag</th><th scope="col">Value</th></tr>
+              {% for tag, details in results.dmarc.tags.items() %}
+              {% if details.explicit and not tag == "v" %}
+              <tr>
+                <th scope="row">{{tag}}</th>
+                {% if tag in ["rua", "ruf"] %}
+                <td>
+                  <ol class="list-unstyled mb-0">
+                    {% for entry in details.value %}
+                    <li>{{entry.address}}</li>
+                    {% endfor %}
+                  </ol>
+                </td>
+                {% else %}
+                <td>{{details.value}}</td>
+                {% endif %}
+              </tr>
+              {% endif %}
+              {% endfor %}
+            </table>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-4">
-        <h4 class="text-center">BIMI</h4>
-        <p>Brand Indicators for Message Identification (BIMI) is a standard for displaying sender domain brand images in
-          the inbox if the message has passed DMARC and the sending domain has a DMARC of <span>quarantine</span> or
-          <span>reject</span>. Most email services that use BIMI also require the sender domain to have a <a
-            href="https://bimigroup.org/vmc-issuers/">Mark Certificate</a> proving that they have the right to use the
-          mark.
-        </p>
-        <p><a href="https://bimigroup.org/">Learn more about BIMI</a>.</p>
-        {% if results.bimi.error %}
-        <div class="alert alert-info text-center" role="alert">
-          {{results.bimi.error}}
-        </div>
-        {% endif %}
-        {% for warning in results.bimi.warnings %}
-        <div class="alert alert-warning text-center" role="alert">
-          {{warning}}
-        </div>
-        {% endfor %}
-        {% if results.bimi.record %}
-        <p>Record: <code>{{results.bimi.record}}</code></p>
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped w-100">
-            <tr>
-              <th scope="col">Tag</th>
-              <th scope="col">Value</th>
-            </tr>
-            {% for tag, data in results.bimi.tags.items() %}
-            {% if not tag == "v" %}
-            <tr>
-              <th scope="row">{{tag}}</th>
-              <td>{{data.value}}</td>
-            </tr>
-            {% endif %}
-            {% endfor %}
-          </table>
-        </div>
-        {% endif %}
       </div>
     </div>
+
+    <!-- Email Infrastructure -->
     <div class="row">
-      <h3 class="text-center mb-5">Email Infrastructure</h3>
+      <div class="col-12">
+        <h3 class="text-center mb-5">Email Infrastructure</h3>
+      </div>
     </div>
+
     <div class="row">
       <div class="col-lg-4">
         <h3 class="text-center">Mail servers</h3>
@@ -200,11 +186,6 @@
         <div class="alert alert-info text-center" role="alert">
           No MX records were found.
         </div>
-        {% for warning in results.mx.warnings %}
-        <div class="alert alert-warning text-center" role="alert">
-          {{warning}}
-        </div>
-        {% endfor %}
         {% else %}
         {% for host in results.mx.hosts %}
         <div class="table-responsive">
@@ -227,63 +208,52 @@
                 </ul>
               </td>
             </tr>
-            <th scope="row">DNSSEC</th>
-            <td>{{host.dnssec}}</td>
+            <tr>
+              <th scope="row">DNSSEC</th>
+              <td>{{host.dnssec}}</td>
             </tr>
             <tr>
               <th scope="row">TLSA</th>
-              <td>
-                {% if host.tlsa %}
-                True
-                {% else %}
-                False
-                {% endif %}
-              </td>
+              <td>{% if host.tlsa %}True{% else %}False{% endif %}</td>
             </tr>
             {% if "tls" in host %}
             <tr>
               <th scope="row">TLS</th>
-              <td>
-                {% if host.tls %}
-                True
-                {% else %}
-                False
-                {% endif %}
-              </td>
+              <td>{% if host.tls %}True{% else %}False{% endif %}</td>
             </tr>
             {% endif %}
             {% if "starttls" in host %}
             <tr>
               <th scope="row">STARTTLS</th>
-              <td>
-                {% if host.starttls %}
-                True
-                {% else %}
-                False
-                {% endif %}
-              </td>
+              <td>{% if host.starttls %}True{% else %}False{% endif %}</td>
             </tr>
             {% endif %}
           </table>
         </div>
         {% if host.dnssec and host.tlsa %}
         <div class="alert alert-success text-center" role="alert">
-          Certificates are pinned using <a
-            href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>.
+          Certificates are pinned using <a href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>.
         </div>
         {% endif %}
-        {%endfor%}
+        {% endfor %}
         {% endif %}
       </div>
+
       <div class="col-lg-4">
         <h3 class="text-center">MTA-STS</h3>
       </div>
+
       <div class="col-lg-4">
         <h3 class="text-center">SMTP TLS Reporting</h3>
       </div>
     </div>
+
+    <!-- DNS Infrastructure -->
     <div class="row">
-      <h3 class="text-center mb-4">DNS Infrastructure</h3>
+      <div class="col-12">
+        <h3 class="text-center mb-4">DNS Infrastructure</h3>
+      </div>
+
       <div class="col-lg-4">
         <h3 class="text-center">SOA</h3>
         {% if error in results.soa %}
@@ -309,6 +279,7 @@
         </div>
         {% endif %}
       </div>
+
       <div class="col-lg-4">
         <h3 class="text-center">Nameservers</h3>
         {% if error in results.ns %}
@@ -319,15 +290,45 @@
         <ul class="list-unstyled text-center">
           {% for host in results.ns.hostnames %}
           <li>{{host}}</li>
-          {%endfor%}
+          {% endfor %}
         </ul>
         {% endif %}
       </div>
     </div>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
-</body>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+          crossorigin="anonymous"></script>
+
+  <!-- Tiny helper to align alerts by equalizing the .intro height -->
+  <script>
+    (function () {
+      const scope = document.getElementById('auth-row');
+      if (!scope) return;
+
+      function setIntroHeights() {
+        const intros = scope.querySelectorAll('.intro');
+        if (!intros.length) return;
+        // reset first
+        intros.forEach(el => el.style.minHeight = '');
+        // compute tallest
+        let max = 0;
+        intros.forEach(el => { max = Math.max(max, el.offsetHeight); });
+        // apply
+        intros.forEach(el => el.style.minHeight = max + 'px');
+      }
+
+      // simple debounce
+      function debounce(fn, ms) {
+        let t; return function () {
+          clearTimeout(t); t = setTimeout(fn, ms);
+        };
+      }
+
+      window.addEventListener('load', setIntroHeights);
+      window.addEventListener('resize', debounce(setIntroHeights, 150));
+    }());
+  </script>
+</body>
 </html>
