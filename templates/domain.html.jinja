@@ -81,8 +81,36 @@
         </div>
         {% endfor %}
         {% if results.dmarc.record %}
-        <p>Record: <code>{{results.dmarc.record}}</code></p>
-        {% endif %}
+        <p>Record: <code>{{results.dmarc.record}}</code>
+          {% endif %}
+          {% if results.dmarc.location %}
+          <br>Location: <code>{{results.dmarc.location}}</code>
+          {% endif %}
+        </p>
+        <table class="table table-bordered table-striped">
+          {% for tag, details in results.dmarc.tags.items() %}
+          {% if details.explicit and not tag == "v" %}
+          <tr>
+            <th scope="row">{{tag}}</th>
+            {% if tag in ["rua", "ruf"] %}
+            <td>
+              <ol class="list-unstyled">
+                {% for entry in details.value %}
+                <li>
+                </li>
+                {{entry.address}}
+                </li>
+                {% endfor %}
+              </ol>
+            </td>
+          </tr>
+          {% else %}
+          <td>{{details.value}}</td>
+          {% endif %}
+          </tr>
+          {% endif %}
+          {% endfor %}
+        </table>
       </div>
       <div class="col-lg-4">
         <h4 class="text-center">BIMI</h4>
