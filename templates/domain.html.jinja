@@ -27,11 +27,11 @@
         <p><a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/">Learn more about how
             DNSSEC works</a>.</p>
         {% if results.dnssec %}
-        <div class="alert alert-success text-center w-auto" role="alert">
+        <div class="alert alert-success text-center" role="alert">
           DNSSEC is enabled for this domain.
         </div>
         {% else %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           DNSSEC is not enabled for this domain.
         </div>
         {% endif %}
@@ -43,12 +43,12 @@
           DNS lookups.</p>
         <p>The SPF standard is defined in <a href="https://www.rfc-editor.org/rfc/rfc7208.html">RFC 7208.</a></p>
         {% if results.spf.error %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           {{results.spf.error}}
         </div>
         {% endif %}
         {% if results.spf.valid %}
-        <div class="alert alert-success text-center w-auto" role="alert">
+        <div class="alert alert-success text-center" role="alert">
           This domain has a valid SPF record.
         </div>
         {% endif %}
@@ -93,18 +93,18 @@
           authentication mechanisms actually authenticate against the same base domain that the end user sees.</p>
         <p><a href="https://seanthegeek.net/459/demystifying-dmarc/">Learn more about how DMARC works</a>.</p>
         {% if results.dmarc.error %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           {{results.spf.error}}
         </div>
         {% endif %}
         {% if results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in ["reject",
         "quarantine"] and results.dmarc.tags.sp.value in ["reject", "quarantine"] %}
-        <div class="alert alert-success text-center w-auto" role="alert">
+        <div class="alert alert-success text-center" role="alert">
           This domain has an enforced DMARC policy.
         </div>
         {% endif %}
         {% for warning in results.dmarc.warnings %}
-        <div class="alert alert-warning text-center w-auto" role="alert">
+        <div class="alert alert-warning text-center" role="alert">
           {{warning}}
         </div>
         {% endfor %}
@@ -156,12 +156,12 @@
         </p>
         <p><a href="https://bimigroup.org/">Learn more about BIMI</a>.</p>
         {% if results.bimi.error %}
-        <div class="alert alert-info text-center w-auto" role="alert">
+        <div class="alert alert-info text-center" role="alert">
           {{results.bimi.error}}
         </div>
         {% endif %}
         {% for warning in results.bimi.warnings %}
-        <div class="alert alert-warning text-center w-auto" role="alert">
+        <div class="alert alert-warning text-center" role="alert">
           {{warning}}
         </div>
         {% endfor %}
@@ -193,15 +193,15 @@
       <div class="col-lg-4">
         <h3 class="text-center">Mail servers</h3>
         {% if error in results.mx %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           {{results.mx.error}}
         </div>
         {% elif results.mx.hosts|length == 0 %}
-        <div class="alert alert-info text-center w-auto" role="alert">
+        <div class="alert alert-info text-center" role="alert">
           No MX records were found.
         </div>
         {% for warning in results.mx.warnings %}
-        <div class="alert alert-warning text-center w-auto" role="alert">
+        <div class="alert alert-warning text-center" role="alert">
           {{warning}}
         </div>
         {% endfor %}
@@ -267,7 +267,7 @@
           </table>
         </div>
         {% if host.dnssec and host.tlsa %}
-        <div class="alert alert-success text-center w-auto" role="alert">
+        <div class="alert alert-success text-center" role="alert">
           Certificates are pinned using <a
             href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>.
         </div>
@@ -287,12 +287,12 @@
       <div class="col-lg-4">
         <h3 class="text-center">SOA</h3>
         {% if error in results.soa %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           {{results.soa.error}}
         </div>
         {% else %}
         {% for warning in results.soa.warnings %}
-        <div class="alert alert-warning text-center w-auto" role="alert">
+        <div class="alert alert-warning text-center" role="alert">
           {{warning}}
         </div>
         {% endfor %}
@@ -312,7 +312,7 @@
       <div class="col-lg-4">
         <h3 class="text-center">Nameservers</h3>
         {% if error in results.ns %}
-        <div class="alert alert-danger text-center w-auto" role="alert">
+        <div class="alert alert-danger text-center" role="alert">
           {{results.ns.error}}
         </div>
         {% else %}
