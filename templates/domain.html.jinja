@@ -56,8 +56,32 @@
         <p>Record: <code>{{results.spf.record}}</code></p>
         {% endif %}
         {% if results.spf.dns_lookups %}
-        <p>DNS lookups used: {{results.spf.dns_lookups}}/10</p>
+        <p>DNS lookups used: {{results.spf.dns_lookups}}/10<br>
+        Void lookups: {{results.spf.dns_void_lookups}}/2
+        </p>
         {% endif %}
+        {% if results.spf.parsed.include|length > 0 or results.spf.parsed.redirect.parsed.include|length > 0 %}
+        <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.</p>
+        <table class="table table-bordered table-striped">
+        <tr>
+        <th scope="col">Include domain</th>
+        <th scope="col">DNS lookups</th>
+        </tr>
+        {% for include in results.spf.parsed.include %}
+        <tr>
+        <td>{{include.domain}}</td>
+        <td>{{include.dns_lookups + 1}}</td>
+        {% endfor %}
+        {% if results.spf.parsed.redirect %}
+        {% for include in results.spf.parsed.redirect.parsed.include %}
+        <tr>
+        <td>{{include.domain}}</td>
+        <td>{{include.dns_lookups + 1}}</td>
+        {% endfor %}
+        {% endif %}
+        </tr>
+        {% endif %}
+        </table>
       </div>
       <div class="col-lg-4">
         <h4 class="text-center">DMARC</h4>
