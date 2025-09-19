@@ -10,8 +10,8 @@
 </head>
 
 <body>
-  <main class="container">
-    <h1>{{site_title}}</h1>
+  <div class="container">
+    <h1><a href="/" class="text-decoration-none text-reset">{{site_title}}</a></h1>
     <div class="row">
       <h2 class="text-center mb-5">{{domain}}</h2>
     </div>
@@ -57,31 +57,35 @@
         {% endif %}
         {% if results.spf.dns_lookups %}
         <p>DNS lookups used: {{results.spf.dns_lookups}}/10<br>
-        Void lookups: {{results.spf.dns_void_lookups}}/2
+          Void lookups: {{results.spf.dns_void_lookups}}/2
         </p>
         {% endif %}
-        {% if results.spf.parsed.include|length > 0 or results.spf.parsed.redirect.parsed.include|length > 0 %}
-        <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.</p>
-        <table class="table table-bordered table-striped">
-        <tr>
-        <th scope="col">Include domain</th>
-        <th scope="col">DNS lookups</th>
-        </tr>
-        {% for include in results.spf.parsed.include %}
-        <tr>
-        <td>{{include.domain}}</td>
-        <td>{{include.dns_lookups + 1}}</td>
-        {% endfor %}
-        {% if results.spf.parsed.redirect %}
-        {% for include in results.spf.parsed.redirect.parsed.include %}
-        <tr>
-        <td>{{include.domain}}</td>
-        <td>{{include.dns_lookups + 1}}</td>
-        {% endfor %}
-        {% endif %}
-        </tr>
-        {% endif %}
-        </table>
+        {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and
+        results.spf.parsed.redirect.parsed.include|length > 0) %}
+        <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.
+        </p>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th scope="col">Domain</th>
+              <th scope="col">DNS lookups</th>
+            </tr>
+            {% for include in results.spf.parsed.include %}
+            <tr>
+              <td>{{include.domain}}</td>
+              <td>{{include.dns_lookups + 1}}</td>
+              {% endfor %}
+              {% if results.spf.parsed.redirect %}
+              {% for include in results.spf.parsed.redirect.parsed.include %}
+            <tr>
+              <td>{{include.domain}}</td>
+              <td>{{include.dns_lookups + 1}}</td>
+              {% endfor %}
+              {% endif %}
+            </tr>
+            {% endif %}
+          </table>
+        </div>
       </div>
       <div class="col-lg-4">
         <h4 class="text-center">DMARC</h4>
@@ -111,33 +115,75 @@
           <br>Location: <code>{{results.dmarc.location}}</code>
           {% endif %}
         </p>
-        <table class="table table-bordered table-striped">
-          {% for tag, details in results.dmarc.tags.items() %}
-          {% if details.explicit and not tag == "v" %}
-          <tr>
-            <th scope="row">{{tag}}</th>
-            {% if tag in ["rua", "ruf"] %}
-            <td>
-              <ol class="list-unstyled">
-                {% for entry in details.value %}
-                <li>
-                </li>
-                {{entry.address}}
-                </li>
-                {% endfor %}
-              </ol>
-            </td>
-          </tr>
-          {% else %}
-          <td>{{details.value}}</td>
-          {% endif %}
-          </tr>
-          {% endif %}
-          {% endfor %}
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th scope="col">Tag</th>
+              <th scope="col">Value</th>
+            </tr>
+            {% for tag, details in results.dmarc.tags.items() %}
+            {% if details.explicit and not tag == "v" %}
+            <tr>
+              <th scope="row">{{tag}}</th>
+              {% if tag in ["rua", "ruf"] %}
+              <td>
+                <ol class="list-unstyled">
+                  {% for entry in details.value %}
+                  <li>
+                  </li>
+                  {{entry.address}}
+                  </li>
+                  {% endfor %}
+                </ol>
+              </td>
+            </tr>
+            {% else %}
+            <td>{{details.value}}</td>
+            {% endif %}
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </table>
+        </div>
       </div>
       <div class="col-lg-4">
         <h4 class="text-center">BIMI</h4>
+        <p>Brand Indicators for Message Identification (BIMI) is a standard for displaying sender domain brand images in
+          the inbox if the message has passed DMARC and the sending domain has a DMARC of <span>quarantine</span> or
+          <span>reject</span>. Most email services that use BIMI also require the sender domain to have a <a
+            href="https://bimigroup.org/vmc-issuers/">Mark Certificate</a> proving that they have the right to use the
+          mark.
+        </p>
+        <p><a href="https://bimigroup.org/">Learn more about BIMI</a>.</p>
+        {% if results.bimi.error %}
+        <div class="alert alert-info text-center w-auto" role="alert">
+          {{results.bimi.error}}
+        </div>
+        {% endif %}
+        {% for warning in results.bimi.warnings %}
+        <div class="alert alert-warning text-center w-auto" role="alert">
+          {{warning}}
+        </div>
+        {% endfor %}
+        {% if results.bimi.record %}
+        <p>Record: <code>{{results.bimi.record}}</code></p>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped w-100">
+            <tr>
+              <th scope="col">Tag</th>
+              <th scope="col">Value</th>
+            </tr>
+            {% for tag, data in results.bimi.tags.items() %}
+            {% if not tag == "v" %}
+            <tr>
+              <th scope="row">{{tag}}</th>
+              <td>{{data.value}}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </table>
+        </div>
+        {% endif %}
       </div>
     </div>
     <div class="row">
@@ -154,9 +200,14 @@
         <div class="alert alert-info text-center w-auto" role="alert">
           No MX records were found.
         </div>
+        {% for warning in results.mx.warnings %}
+        <div class="alert alert-warning text-center w-auto" role="alert">
+          {{warning}}
+        </div>
+        {% endfor %}
         {% else %}
-        <ul class="list-unstyled text-center">
-          {% for host in results.mx.hosts %}
+        {% for host in results.mx.hosts %}
+        <div class="table-responsive">
           <table class="table table-bordered table-striped">
             <tr>
               <th scope="row">Preference</th>
@@ -214,14 +265,14 @@
             </tr>
             {% endif %}
           </table>
-          {% if host.dnssec and host.tlsa %}
-          <div class="alert alert-success text-center w-auto" role="alert">
-            Certificates are pinned using <a
-              href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>.
-          </div>
-          {% endif %}
-          {%endfor%}
-        </ul>
+        </div>
+        {% if host.dnssec and host.tlsa %}
+        <div class="alert alert-success text-center w-auto" role="alert">
+          Certificates are pinned using <a
+            href="https://en.wikipedia.org/wiki/DNS-based_Authentication_of_Named_Entities">DANE</a>.
+        </div>
+        {% endif %}
+        {%endfor%}
         {% endif %}
       </div>
       <div class="col-lg-4">
@@ -240,15 +291,22 @@
           {{results.soa.error}}
         </div>
         {% else %}
+        {% for warning in results.soa.warnings %}
+        <div class="alert alert-warning text-center w-auto" role="alert">
+          {{warning}}
+        </div>
+        {% endfor %}
         <p class="text-center">Record: <code>{{results.soa.record}}</code></p>
-        <table class="table table-bordered table-striped">
-          {% for key, value in results.soa["values"].items() %}
-          <tr>
-            <th scope="row">{{key.capitalize().replace("_", " ")}}</th>
-            <td>{{value}}</td>
-          </tr>
-          {% endfor %}
-        </table>
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            {% for key, value in results.soa["values"].items() %}
+            <tr>
+              <th scope="row">{{key.capitalize().replace("_", " ")}}</th>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
         {% endif %}
       </div>
       <div class="col-lg-4">
@@ -266,9 +324,7 @@
         {% endif %}
       </div>
     </div>
-    </div>
-    </div>
-  </main>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
     crossorigin="anonymous"></script>
