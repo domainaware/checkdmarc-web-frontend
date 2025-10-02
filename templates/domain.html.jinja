@@ -89,7 +89,7 @@
           </p>
           {% endif %}
 
-          {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and results.spf.parsed.redirect.parsed.include|length > 0) %}
+          {% if "parsed" in results.spf and (results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and results.spf.parsed.redirect.parsed.include|length > 0)) %}
           <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.</p>
           <div class="table-responsive">
             <table class="table table-bordered table-striped">
@@ -148,7 +148,7 @@
             {% endif %}
           </p>
           {% endif %}
-
+          {% if "tags" in results.dmarc %}
           <div class="table-responsive">
             <table class="table table-bordered table-striped">
               <tr><th scope="col">Tag</th><th scope="col">Value</th></tr>
@@ -172,6 +172,7 @@
               {% endfor %}
             </table>
           </div>
+          {% endif %}
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
     </div> <!-- End auth row -->
