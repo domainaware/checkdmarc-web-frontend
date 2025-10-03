@@ -196,6 +196,58 @@
           {% endif %}
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
+      <!-- BIMI -->
+      <div class="col-lg-4">
+        <div class="p-3 pt-0">
+          <div class="intro mb-3">
+            <h4 class="text-center">BIMI</h4>
+            <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that enables the use of brand-controlled logos within supporting email clients. For the brand's logo to be displayed, the email must pass DMARC authentication checks, ensuring that the organization's domain has not been impersonated. </p>
+            <p><a href=https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
+          </div> <!-- End intro -->
+
+          {% if results.bimi.error %}
+          {% if "A BIMI record does not exist" in results.bimi.error %}
+          <div class="alert alert-info text-center mb-3" role="alert">
+            {{results.bimi.error}}
+          </div>
+          {% else %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.bimi.error}}
+          </div>
+          {% endif %}
+          {% endif %}
+          {% for warning in results.bimi.warnings %}
+            <div class="alert alert-warning text-center mb-3" role="alert">{{warning}}</div>
+          {% endfor %}
+          {% if results.bimi.record %}
+          <p>Record: <code>{{results.bimi.record}}</code>
+            {% if results.bimi.location %}
+            <br>Location: <code>{{results.bimi.location}}</code>
+            {% endif %}
+          </p>
+          {% endif %}
+          {% if "tags" in results.bimi %}
+          {% if "l" in  results.bimi.tags and results.bimi.tags.l == "" %}
+          <div class="alert alert-info text-center mb-3" role="alert">
+            The Domain owner has explicitly declined BIMI participation.
+          </div>
+          {% endif %}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr><th scope="col">Tag</th><th scope="col">Value</th></tr>
+              {% for tag, details in results.bimi.tags.items() %}
+                {% if  not tag == "v" %}
+                <tr>
+                  <th scope="row">{{tag}}</th>
+                  <td>{{details.value}}</td>
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </table>
+          </div>
+          {% endif %}
+        </div> <!-- End padded wrapper -->
+      </div> <!-- End column -->
     </div> <!-- End auth row -->
 
     <!-- Email Infrastructure -->
