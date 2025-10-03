@@ -93,13 +93,20 @@
           {% for entry in results.spf.parsed.pass %}
           {% if"%{" in entry.value %}
           <div class="alert alert-info text-center" role="alert">
-          <code>{{entry.mechanism}}:{{entry.value}}</code> uses SPF macros so a server (i.e., "hosted SPF services") can dynamically indicate if an IP address should be accepted in SPF validation.
+          <code>{{entry.mechanism}}:{{entry.value}}</code> uses SPF macros so a server (i.e., hosted SPF services) can dynamically indicate if an IP address should be accepted in SPF validation.
+        </div>
+          {% endif %}
+          {% endfor %}
+          {% for include in results.spf.parsed.include %}
+          {% if"%{" in include.domain %}
+          <div class="alert alert-info text-center" role="alert">
+          <code>include:{{include.domain}}</code> uses SPF macros so a server (i.e., hosted SPF services) can dynamically indicate if an IP address should be accepted in SPF validation.
         </div>
           {% endif %}
           {% endfor %}
 
           {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and results.spf.parsed.redirect.parsed.include|length > 0) %}
-          <p>The following table contains a list of DNS lookups used by each include, including the include lookup itself.</p>
+          <p>The following table contains a list of DNS lookups used by each include, including the <code>include</code> lookup itself.</p>
           <div class="table-responsive">
             <table class="table table-bordered table-striped">
               <tr>
