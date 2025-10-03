@@ -227,9 +227,9 @@
           </p>
           {% endif %}
           {% if "tags" in results.bimi %}
-          {% if "l" in  results.bimi.tags and results.bimi.tags.l == "" %}
+          {% if "l" in  results.bimi.tags and results.bimi.tags.l.value == "" %}
           <div class="alert alert-info text-center mb-3" role="alert">
-            The Domain owner has explicitly declined BIMI participation.
+            The domain owner has explicitly declined BIMI participation.
           </div>
           {% endif %}
           <div class="table-responsive">
