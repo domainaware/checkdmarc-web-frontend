@@ -381,7 +381,43 @@
             <p>SMTP TLS Reporting is a reporting mechanism and format by which sending systems can share statistics and specific information about potential failures to establish encrypted channels with recipient domains. Recipient domains can then use this information to both detect potential attacks and diagnose unintentional misconfigurations.</p>
             <p>SMTP TLS Reporting is defined in <a href="https://datatracker.ietf.org/doc/html/rfc8460">RFC 8460</a>.</p>
           </div> <!-- End intro -->
-
+           {% if results.smtp_tls_reporting.error %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.smtp_tls_reporting.error}}
+          </div>
+          {% else %}
+          <div class="alert alert-success text-center mb-3" role="alert">
+           This domain has a valid SMTP TLS Reporting record.
+          </div>
+          {% for warning in results.smtp_tls_reporting.warnings %}
+          <div class="alert alert-warning text-center" role="alert">
+            {{warning}}
+          </div>
+          {% endfor %}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr><th scope="col">Tag</th><th scope="col">Value</th></tr>
+              {% for tag, details in results.smtp_tls_reporting.tags.items() %}
+                {% if not tag == "v" %}
+                <tr>
+                  <th scope="row">{{tag}}</th>
+                  {% if tag in ["rua"] %}
+                  <td>
+                    <ol class="list-unstyled mb-0">
+                      {% for entry in details.value %}
+                      <li>{{entry}}</li>
+                      {% endfor %}
+                    </ol>
+                  </td>
+                  {% else %}
+                  <td>{{details.value}}</td>
+                  {% endif %}
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </table>
+          </div>
+          {% endif %}
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
     </div> <!-- End row -->
