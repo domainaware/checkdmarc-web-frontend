@@ -328,7 +328,48 @@
             <p>SMTP MTA Strict Transport Security (MTA-STS) is a mechanism enabling email service providers to declare their ability to receive Transport Layer Security (TLS) secure SMTP connections and to specify whether sending SMTP servers should refuse to deliver to MX hosts that do not offer TLS with a trusted server certificate.</p>
             <p>MTA-STS is defined in <a href="https://datatracker.ietf.org/doc/html/rfc8461">RFC 8461</a>.</p>
           </div> <!-- End intro -->
-
+           {% if results.mta_sts.error %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.mta_sts.error}}
+          </div>
+          {% else %}
+          {% if results.mta_sts.policy.mode == "enforce" %}
+          <div class="alert alert-success text-center mb-3" role="alert">
+           This domain has an enforced MTA-STS policy.
+          </div>
+          {% endif %}
+          {% for warning in results.mta_sts.warnings %}
+          <div class="alert alert-warning text-center" role="alert">
+            {{warning}}
+          </div>
+          {% endfor %}
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <tr>
+                <th scope="row">id</th>
+                <td>{{results.mta_sts.id}}</td>
+              </tr>
+              <tr>
+                <th scope="row">mode</th>
+                <td>{{results.mta_sts.policy.mode}}</td>
+              </tr>
+              <tr>
+                <th scope="row">max age</th>
+                <td>{{results.mta_sts.policy.max_age}}</td>
+              </tr>
+              <tr>
+                <th scope="row">mx</th>
+                <td>
+                  <ul class="list-unstyled">
+                  {% for host in results.mta_sts.policy.mx %}
+                  <li>{{host}}</li>
+                  {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+            </table>
+          </div>
+          {% endif %}
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
 
