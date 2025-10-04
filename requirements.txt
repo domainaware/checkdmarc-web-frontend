@@ -1,3 +1,5 @@
 python-dotenv
 flask
 requests
+ruff
+black

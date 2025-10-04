@@ -1,9 +1,13 @@
 {
-    "cSpell.words": [
-        "BIMI",
-        "DNSSEC",
-        "dotenv",
-        "elif",
-        "endfor"
-    ]
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.black-formatter",
+
+    // Let Ruff handle lint fixes + import sorting on save
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+  "editor.formatOnSave": true,
+  "cSpell.words": ["BIMI", "DNSSEC", "dotenv", "elif", "endfor", "stylesheet"]
 }
