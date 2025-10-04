@@ -208,7 +208,7 @@
           <div class="intro mb-3">
             <h4 class="text-center">BIMI</h4>
             <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that enables the use of brand-controlled logos within supporting email clients. For the brand's logo to be displayed, the email must pass DMARC authentication checks, ensuring that the organization's domain has not been impersonated. </p>
-            <p><a href=https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
+            <p><a href="https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
           </div> <!-- End intro -->
           {% if results.bimi.error %}
           {% if "A BIMI record does not exist" in results.bimi.error %}
@@ -314,8 +314,9 @@
             <tr>
               <th scope="row">logoTypeSHA256</th>
               <td>{{results.bimi.certificate.logotype_sha256}}</td>
-            </table>
-           </div>
+            </tr>
+          </table>
+         </div>
            {% endif %}
            {% endif %}
 
@@ -334,7 +335,7 @@
     <div class="row">
       <div class="col-lg-4">
         <h4 class="text-center">Mail servers</h4>
-        {% if error in results.mx %}
+        {% if "error" in results.mx %}
         <div class="alert alert-danger text-center" role="alert">
           {{results.mx.error}}
         </div>
@@ -506,7 +507,7 @@
       <!-- SOA -->
       <div class="col-lg-4">
         <h4 class="text-center">SOA</h4>
-        {% if error in results.soa %}
+        {% if "error" in results.soa %}
         <div class="alert alert-danger text-center" role="alert">
           {{results.soa.error}}
         </div>
@@ -533,7 +534,7 @@
       <!-- Nameservers -->
       <div class="col-lg-4">
         <h4 class="text-center">Nameservers</h4>
-        {% if error in results.ns %}
+        {% if "error" in results.ns %}
         <div class="alert alert-danger text-center" role="alert">
           {{results.ns.error}}
         </div>
