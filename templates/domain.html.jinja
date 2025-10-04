@@ -201,14 +201,15 @@
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
       <!-- BIMI -->
-      <div class="col-lg-4">
+     <div class="col-lg-2">
+    </div>
+      <div class="col-lg-8">
         <div class="p-3 pt-0">
           <div class="intro mb-3">
             <h4 class="text-center">BIMI</h4>
             <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that enables the use of brand-controlled logos within supporting email clients. For the brand's logo to be displayed, the email must pass DMARC authentication checks, ensuring that the organization's domain has not been impersonated. </p>
             <p><a href=https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
           </div> <!-- End intro -->
-
           {% if results.bimi.error %}
           {% if "A BIMI record does not exist" in results.bimi.error %}
           <div class="alert alert-info text-center mb-3" role="alert">
@@ -221,7 +222,9 @@
           {% endif %}
           {% endif %}
           {% for warning in results.bimi.warnings %}
-            <div class="alert alert-warning text-center mb-3" role="alert">{{warning}}</div>
+            <div class="alert alert-warning text-center mb-3" role="alert">
+              {{warning}}
+            </div>
           {% endfor %}
           {% if results.bimi.record %}
           <p>Record: <code>{{results.bimi.record}}</code>
@@ -250,6 +253,72 @@
             </table>
           </div>
           {% endif %}
+          {% if "image" in results.bimi %}
+          <h5 class="text-center">Image</h5>
+          {% if "error" in results.bimi.image %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.bimi.image.error}}
+            </div>
+          {% else %}
+          <img alt="{{results.bimi.image.title}}"
+          src="{{results.bimi.tags.l.value}}"
+          referrerpolicy="no-referrer"
+          class="mx-auto d-block"
+          width="50%"
+          loading="lazy"
+          decoding="async"/>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+            {% for key, value in results.bimi.image.items() %}
+            <tr>
+              <th scope="row">{{key}}</th>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+            </table>
+          </div>
+           {% endif %}
+           {% endif %}
+           {% if "certificate" in results.bimi %}
+           <h5 class="text-center">Certificate</h5>
+           {% if "error" in results.bimi.certificate %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            {{results.bimi.certificate.error}}
+            </div>
+          {% else %}
+           {% for error in results.bimi.certificate.validation_errors %}
+            <div class="alert alert-danger text-center mb-3" role="alert">
+            {{error}}
+            </div>
+          {% endfor %}
+           <h6 class="text-center">Issuer</h6>
+           <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+            {% for key, value in results.bimi.certificate.issuer.items() %}
+            <tr>
+              <th scope="row">{{key}}</th>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+            </table>
+           </div>
+            <h6 class="text-center">Subject</h6>
+           <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+            {% for key, value in results.bimi.certificate.subject.items() %}
+            <tr>
+              <th scope="row">{{key}}</th>
+              <td>{{value}}</td>
+            </tr>
+            {% endfor %}
+            <tr>
+              <th scope="row">logoTypeSHA256</th>
+              <td>{{results.bimi.certificate.logotype_sha256}}</td>
+            </table>
+           </div>
+           {% endif %}
+           {% endif %}
+
         </div> <!-- End padded wrapper -->
       </div> <!-- End column -->
     </div> <!-- End auth row -->
