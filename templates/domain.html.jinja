@@ -78,7 +78,8 @@
           {% endif %}
 
           {% if results.spf.record %}
-          <p>Record: <code>{{results.spf.record}}</code></p>
+          <p>Record: <code>{{results.spf.record}}</code><br>
+          All: <code>{{results.spf.parsed.all}}</code></p>
           {% endif %}
 
           {% if results.spf.dns_lookups %}
