@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>{% block title %}{% endblock %} | {{ site_title }}</title>
+  {% block head %}{%endblock%}
+  <link rel="icon" type="image/png" sizes="256x256"
+          href="{{ url_for('static', filename='favicon.png') }}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+  </style>
+</head>
+<body>
+  {% block before_content %}{% endblock %}
+  {% block content %}{% endblock %}
+  {% block after_content %}{% endblock %}
+  <footer class="mt-5 pt-4 border-top text-center small text-muted">
+  {%block footer %}{% endblock %}
+   <p class="mb-1"><span>&copy; <a href="{{ site_author_url }}">{{ site_author }}</a></span></p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  {%block scripts%}{% endblock %} 
+</body>
+</html>
