@@ -83,8 +83,10 @@
           </div>
           {% endif %}
 
-          {% if results.spf.record %}
-          <p>Record: <code>{{ results.spf.record }}</code><br>all: <code>
+          {% if "parsed" in results.spf.record %}
+          <p>Record: <code>{{ results.spf.record }}</code><br>
+          {% if "parsed" in spf.record %}
+          all: <code>
           {% if results.spf.parsed.redirect %}
           {{ results.spf.parsed.redirect.parsed.all }}
           {% else %}
@@ -92,8 +94,9 @@
           {% endif %}
           </code></p>
           {% endif %}
+          {% endif %}
 
-          {% if results.spf.dns_lookups is not none %}
+          {% if "dns_lookups" in results.spf %}
           <p>DNS lookups used: {{ results.spf.dns_lookups }}/10<br>
             Void lookups: {{ results.spf.dns_void_lookups }}/2
           </p>
