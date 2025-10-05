@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
+import datetime
 import os
 import re
+import time
 import unicodedata
 
 import requests
@@ -19,6 +21,8 @@ for var in required_env_vars:
         exit(1)
 
 site_title = os.environ["SITE_TITLE"]
+site_author = os.environ["SITE_AUTHOR"]
+site_author_url = os.environ["SITE_AUTHOR_URL"]
 backend_url = os.environ["BACKEND_URL"].strip("/")
 backend_api_key = os.environ["BACKEND_API_KEY"]
 check_smtp_tls = None
@@ -27,6 +31,11 @@ if "CHECK_SMTP_TLS" in os.environ:
 
 
 app = Flask(__name__)
+
+
+@app.before_request
+def start_timer():
+    request.start_time = time.perf_counter()
 
 
 def normalize_domain(domain: str) -> str:
@@ -49,7 +58,12 @@ def normalize_domain(domain: str) -> str:
 
 @app.get("/")
 def show_home():
-    return render_template("index.html.jinja", site_title=site_title)
+    return render_template(
+        "index.html.jinja",
+        site_title=site_title,
+        site_author=site_author,
+        site_author_url=site_author_url,
+    )
 
 
 @app.post("/")
@@ -60,20 +74,41 @@ def redirect_to_domain_page():
 
 @app.route("/domain/<domain>")
 def domain(domain):
+    start_time = getattr(request, "start_time", time.perf_counter())
     domain = normalize_domain(domain)
     get_params = {"api_key": backend_api_key}
     if check_smtp_tls:
         get_params["check_smtp_tls"] = check_smtp_tls
     results = requests.get(f"{backend_url}/domain/{domain}", params=get_params).json()
+    checkdmarc_version = results["checkdmarc_version"]
+    elapsed_time = round(time.perf_counter() - start_time, 3)
+    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
+        "%Y-%m-%d %H:%M UTC"
+    )
     if (
         "error" in results["soa"]
         and "does not exist" in results["soa"]["error"].lower()
     ):
         content = render_template(
-            "domain-does-not-exist.html.jinja", site_title=site_title, domain=domain
+            "domain-does-not-exist.html.jinja",
+            site_title=site_title,
+            domain=domain,
+            site_author=site_author,
+            site_author_url=site_author_url,
+            checkdmarc_version=checkdmarc_version,
+            timestamp=timestamp,
+            elapsed_time=elapsed_time,
         )
         return Response(content, status=404)
 
     return render_template(
-        "domain.html.jinja", site_title=site_title, domain=domain, results=results
+        "domain.html.jinja",
+        site_title=site_title,
+        domain=domain,
+        results=results,
+        site_author=site_author,
+        site_author_url=site_author_url,
+        checkdmarc_version=checkdmarc_version,
+        timestamp=timestamp,
+        elapsed_time=elapsed_time,
     )
