@@ -26,7 +26,7 @@
     </div>
 
     <!-- Alerts align right after the Learn more links -->
-    <div id="auth-row" class="row gx-4 gy-0 align-items-start">
+    <div id="auth-row" class="row align-row gx-4 gy-0 align-items-start">
       <!-- DNSSEC -->
       <div class="col-lg-4">
         <div class="p-3 pt-0">
@@ -354,14 +354,14 @@
     </div> <!-- End auth row -->
 
     <!-- Email Infrastructure -->
-    <div class="row">
+    <div id="email-infra-row" class="row">
       <div class="col-12">
         <h3 class="text-center mb-4">Email Infrastructure</h3>
       </div>
     </div>
 
     <!-- Mail servers -->
-    <div class="row">
+    <div class="row align-row">
       <div class="col-lg-4">
         <h4 class="text-center">Mail servers</h4>
         {% if "error" in results.mx %}
@@ -608,34 +608,41 @@
 
 {% block scripts %}
   <!-- Tiny helper to align alerts by equalizing the .intro height -->
-  <script>
-    (function () {
-      const scope = document.getElementById('auth-row');
-      if (!scope) return;
+ <script>
+(function () {
+  const scopes = document.getElementsByClassName('align-row');
 
-      function setIntroHeights() {
-        const intros = scope.querySelectorAll('.intro');
-        if (!intros.length) return;
-        // reset first
-        intros.forEach(el => el.style.minHeight = '');
-        // compute tallest
-        let max = 0;
-        intros.forEach(el => { max = Math.max(max, el.offsetHeight); });
-        // apply
-        intros.forEach(el => el.style.minHeight = max + 'px');
-      }
+  function setIntroHeightsIn(scope) {
+    const intros = scope.querySelectorAll('.intro');
+    if (!intros.length) return;
 
-      // simple debounce
-      function debounce(fn, ms) {
-        let t; return function () {
-          clearTimeout(t); t = setTimeout(fn, ms);
-        };
-      }
+    // reset first
+    intros.forEach(el => el.style.minHeight = '');
 
-      window.addEventListener('DOMContentLoaded', setIntroHeights);
-      window.addEventListener('load', setIntroHeights);
-      window.addEventListener('resize', debounce(setIntroHeights, 150));
-    }());
-  </script>
+    // compute tallest
+    let max = 0;
+    intros.forEach(el => { max = Math.max(max, el.offsetHeight); });
+
+    // apply
+    intros.forEach(el => el.style.minHeight = max + 'px');
+  }
+
+  function setAllIntroHeights() {
+    // HTMLCollection → Array
+    Array.from(scopes).forEach(setIntroHeightsIn);
+  }
+
+  // simple debounce
+  function debounce(fn, ms) {
+    let t; return function () {
+      clearTimeout(t); t = setTimeout(fn, ms);
+    };
+  }
+
+  window.addEventListener('DOMContentLoaded', setAllIntroHeights);
+  window.addEventListener('load', setAllIntroHeights);
+  window.addEventListener('resize', debounce(setAllIntroHeights, 150));
+}());
+</script>
 
 {% endblock %}
