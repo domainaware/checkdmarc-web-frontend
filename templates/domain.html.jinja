@@ -245,7 +245,7 @@
           <div class="alert alert-info text-center mb-3" role="alert">
             The domain owner has explicitly declined BIMI participation.
           </div>
-          {% elif "error" not in results.bimi and results.bimi.warning|length == 0 %}
+          {% elif "error" not in results.bimi and results.bimi.warnings|length == 0 %}
            <div class="alert alert-success text-center mb-3" role="alert">
             This domain has a valid BIMI record, image, and certificate at the default selector.
           </div>
