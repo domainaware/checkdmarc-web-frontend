@@ -80,35 +80,29 @@ def domain(domain):
     if check_smtp_tls:
         get_params["check_smtp_tls"] = check_smtp_tls
     results = requests.get(f"{backend_url}/domain/{domain}", params=get_params).json()
-    checkdmarc_version = results["checkdmarc_version"]
     elapsed_time = round(time.perf_counter() - start_time, 3)
-    timestamp = datetime.datetime.now(datetime.timezone.utc).strftime(
-        "%Y-%m-%d %H:%M UTC"
-    )
     if (
         "error" in results["soa"]
         and "does not exist" in results["soa"]["error"].lower()
     ):
         content = render_template(
             "domain-does-not-exist.html.jinja",
+            debug=app.debug,
             site_title=site_title,
             domain=domain,
             site_author=site_author,
             site_author_url=site_author_url,
-            checkdmarc_version=checkdmarc_version,
-            timestamp=timestamp,
             elapsed_time=elapsed_time,
         )
         return Response(content, status=404)
 
     return render_template(
         "domain.html.jinja",
+        debug=app.debug,
         site_title=site_title,
         domain=domain,
         results=results,
         site_author=site_author,
         site_author_url=site_author_url,
-        checkdmarc_version=checkdmarc_version,
-        timestamp=timestamp,
         elapsed_time=elapsed_time,
     )
