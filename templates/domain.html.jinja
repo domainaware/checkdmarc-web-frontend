@@ -72,10 +72,10 @@
           </div>
           {% endif %}
 
-          {% if "parsed" in results.spf.record %}
-          <p>Record: <code>{{ results.spf.record }}</code><br>
-          {% if "parsed" in spf.record %}
-          all: <code>
+          {% if "record" in results.spf %}
+          <p>Record: <code>{{ results.spf.record }}</code>
+          {% if "parsed" in results.spf %}
+          <br>all: <code>
           {% if results.spf.parsed.redirect %}
           {{ results.spf.parsed.redirect.parsed.all }}
           {% else %}
@@ -238,6 +238,15 @@
           </div>
           {% endif %}
           {% endif %}
+          {% if "tags" in results.bimi and "l" in results.bimi.tags and results.bimi.tags.l.value == "" %}
+          <div class="alert alert-info text-center mb-3" role="alert">
+            The domain owner has explicitly declined BIMI participation.
+          </div>
+          {% elif "error" not in results.bimi and results.bimi.warning|length == 0 %}
+           <div class="alert alert-success text-center mb-3" role="alert">
+            This domain has a valid BIMI record, image, and certificate at the default selector.
+          </div>
+          {% endif %}
           {% for warning in results.bimi.warnings %}
           <div class="alert alert-warning text-center mb-3" role="alert">
             {{ warning }}
@@ -251,11 +260,6 @@
           </p>
           {% endif %}
           {% if "tags" in results.bimi %}
-          {% if "l" in results.bimi.tags and results.bimi.tags.l.value == "" %}
-          <div class="alert alert-info text-center mb-3" role="alert">
-            The domain owner has explicitly declined BIMI participation.
-          </div>
-          {% endif %}
           <div class="table-responsive">
             <table class="table table-bordered table-striped">
               <caption class="visually-hidden">BIMI record tag values</caption>
@@ -286,7 +290,7 @@
           </div>
           {% else %}
           <img alt="{{ results.bimi.image.title }}" src="{{ results.bimi.tags.l.value }}" referrerpolicy="no-referrer"
-            class="mx-auto d-block" width="50%" loading="lazy" decoding="async" />
+            class="mx-auto d-block mb-4" width="50%" loading="lazy" decoding="async" />
           <div class="table-responsive">
             <table class="table table-bordered table-striped">
               <caption class="visually-hidden">Image metadata</caption>
