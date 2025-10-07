@@ -13,8 +13,14 @@ ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ
 
 load_dotenv()
 
-required_env_vars = ["SITE_TITLE", "BACKEND_URL", "SITE_AUTHOR", "SITE_AUTHOR_URL" "BACKEND_API_KEY"]
-missing_env_vars = [] 
+required_env_vars = [
+    "SITE_TITLE",
+    "BACKEND_URL",
+    "SITE_AUTHOR",
+    "SITE_AUTHOR_URL",
+    "BACKEND_API_KEY",
+]
+missing_env_vars = []
 for var in required_env_vars:
     if var not in os.environ:
         missing_env_vars.append(var)
