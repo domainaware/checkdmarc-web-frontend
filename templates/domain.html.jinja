@@ -453,7 +453,15 @@
           {% else %}
           {% if results.mta_sts.policy.mode == "enforce" %}
           <div class="alert alert-success text-center mb-3" role="alert">
-            This domain has an enforced MTA-STS policy.
+            This domain has an enforce MTA-STS policy.
+          </div>
+          {% elif results.mta_sts.policy.mode == "testing" %}
+          <div class="alert alert-warning text-center mb-3" role="alert">
+            This domain has a testing MTA-STS policy.
+          </div>
+          {% elif results.mta_sts.policy.mode == "none" %}
+          <div class="alert alert-danger text-center mb-3" role="alert">
+            This domain has a none MTA-STS policy.
           </div>
           {% endif %}
           {% for warning in results.mta_sts.warnings %}
