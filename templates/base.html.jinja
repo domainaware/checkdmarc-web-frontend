@@ -4,7 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <title>{{ page_title or "Free Email Security Test – SPF, DMARC & More | " + {{site_title}} }}</title>
+  {% if title %}
+  <title>{{ title ~ " | " ~ site_title }}</title>
+  {% else %}
+  <title>{{ site_title }}</title>
+  {% endif %}
+   <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Domain Checkup",
+      "operatingSystem": "Web",
+      "applicationCategory": "Utility",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free SPF, DMARC, MX, MTA-STS, TLS-RPT, BIMI, and DNSSEC checker with clear pass/fail guidance."
+    }
+    </script>
   <meta name="description" content="{{ meta_description or 'Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed email-security guidance.' }}">
   <link rel="canonical" href="{{ request.url }}" />
   {% block head %}{%endblock%}

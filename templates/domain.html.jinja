@@ -1,5 +1,5 @@
 {% extends "base.html.jinja" %}
-{% block title %}{{ domain }}{% endblock %}
+{% set title = domain %}
 {% block head %}
 {% if not is_sample_domain %}
     <meta name="robots" content="noindex,follow">

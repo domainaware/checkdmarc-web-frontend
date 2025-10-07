@@ -1,5 +1,5 @@
 {% extends "page.html.jinja"%}
-{% block title %}{{ domain }} does not exist{% endblock %}
+{% set title = domain ~ "does not exist" %}
 
 {% block content %}
     <div class="row justify-content-center">
