@@ -20,12 +20,15 @@ Why create or use this when there are already so many other websites that check 
     - Validation and parsing of DMARC records
     - Shows warnings when the DMARC record is made ineffective by `pct` or `sp` values
     - Checks for authorization records on reporting email addresses
+  - BIMI
+    - Validation of the mark format and certificate
+    - Parsing of the mark certificate
   - MX records
     - Preference
     - IPv4 and IPv6 addresses
     - Checks for STARTTLS (optional; currently disabled on the production website)
     - Use of DNSSEC/TLSA/DANE to pin certificates
-  - SMTP-STS
+  - MTA-STS
   - SMTP TLS reporting
     - Record and policy parsing and validation
     - Record validation and parsing
