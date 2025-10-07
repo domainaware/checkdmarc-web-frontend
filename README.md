@@ -31,7 +31,6 @@ Why create or use this when there are already so many other websites that check 
   - MTA-STS
   - SMTP TLS reporting
     - Record and policy parsing and validation
-    - Record validation and parsing
   - SOA record parsing
   - Nameserver listing
 - No sales pitches
