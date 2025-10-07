@@ -13,20 +13,21 @@ ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ
 
 load_dotenv()
 
-required_env_vars = ["SITE_TITLE", "BACKEND_URL", "BACKEND_API_KEY"]
+required_env_vars = ["SITE_TITLE", "BACKEND_URL", "SITE_AUTHOR", "SITE_AUTHOR_URL" "BACKEND_API_KEY"]
+missing_env_vars = [] 
 for var in required_env_vars:
     if var not in os.environ:
-        print(f"The required environment variable {var} is missing.")
-        exit(1)
+        missing_env_vars.append(var)
+if len(missing_env_vars):
+    print(f"Error: Missing required environment variables {",".join(missing_env_vars)}")
+    exit(1)
 
 site_title = os.environ["SITE_TITLE"]
 site_author = os.environ["SITE_AUTHOR"]
 site_author_url = os.environ["SITE_AUTHOR_URL"]
 backend_url = os.environ["BACKEND_URL"].strip("/")
 backend_api_key = os.environ["BACKEND_API_KEY"]
-check_smtp_tls = None
-if "CHECK_SMTP_TLS" in os.environ:
-    check_smtp_tls = os.environ["CHECK_SMTP_TLS"]
+check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
 
 
 app = Flask(__name__)
