@@ -76,6 +76,13 @@
             This domain has a valid SPF record.
           </div>
           {% endif %}
+          {% if "warnings" in results.spf %}
+          {% for warning in results.spf.warnings %}
+          <div class="alert alert-warning text-center mb-3" role="alert">
+            {{warning}}
+          </div>
+          {% endfor %}
+          {% endif %}
 
           {% if "record" in results.spf %}
           <p>Record: <code>{{ results.spf.record }}</code>
