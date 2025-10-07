@@ -9,5 +9,14 @@
     }
   },
   "editor.formatOnSave": true,
-  "cSpell.words": ["BIMI", "DNSSEC", "dotenv", "elif", "endfor", "stylesheet"]
+  "cSpell.words": [
+    "BIMI",
+    "DNSSEC",
+    "dotenv",
+    "elif",
+    "endfor",
+    "STARTTLS",
+    "stylesheet",
+    "TLSA"
+  ]
 }
