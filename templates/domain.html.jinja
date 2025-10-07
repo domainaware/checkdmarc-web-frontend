@@ -1,6 +1,10 @@
 {% extends "base.html.jinja" %}
 {% block title %}{{ domain }}{% endblock %}
-
+{% block head %}
+{% if not is_sample_domain %}
+    <meta name="robots" content="noindex,follow">
+{% endif %}
+{% endblock %}
 {% block content %}
   <main class="container" role="main">
     <!-- Site Title -->
@@ -506,7 +510,7 @@
       <div class="col-lg-4">
         <div class="p-3 pt-0">
           <div class="intro mb-3">
-            <h4 class="text-center">SMTP TLS Reporting</h4>
+            <h4 class="text-center">SMTP TLS Reporting (TLS-RPT)</h4>
             <p>SMTP TLS Reporting is a reporting mechanism and format by which sending systems can share statistics and
               specific information about potential failures to establish encrypted channels with recipient domains.
               Recipient domains can then use this information to both detect potential attacks and diagnose
@@ -520,7 +524,7 @@
           </div>
           {% else %}
           <div class="alert alert-success text-center mb-3" role="alert">
-            This domain has a valid SMTP TLS Reporting record.
+            This domain has a valid TLS-RPT record.
           </div>
           {% for warning in results.smtp_tls_reporting.warnings %}
           <div class="alert alert-warning text-center" role="alert">

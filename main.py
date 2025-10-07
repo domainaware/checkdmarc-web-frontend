@@ -80,6 +80,14 @@ def redirect_to_domain_page():
 
 @app.route("/domain/<domain>")
 def domain(domain):
+    sample_domains = [
+        "example.com",
+        "proton.me",
+        "gmail.com",
+        "yahoo.com"
+    ]
+    is_sample_domain = domain in sample_domains
+
     start_time = getattr(request, "start_time", time.perf_counter())
     domain = normalize_domain(domain)
     get_params = {"api_key": backend_api_key}
@@ -96,6 +104,7 @@ def domain(domain):
             debug=app.debug,
             site_title=site_title,
             domain=domain,
+            is_sample_domain=is_sample_domain,
             site_author=site_author,
             site_author_url=site_author_url,
             elapsed_time=elapsed_time,
