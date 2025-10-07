@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <title>{{ page_title or "Free Email Security Test – SPF, DMARC & More | {{site_title}}" }}</title>
+  <title>{{ page_title or "Free Email Security Test – SPF, DMARC & More | " + {{site_title}} }}</title>
   <meta name="description" content="{{ meta_description or 'Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed email-security guidance.' }}">
   <link rel="canonical" href="{{ request.url }}" />
   {% block head %}{%endblock%}
