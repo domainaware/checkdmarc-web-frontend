@@ -1,5 +1,8 @@
 {% extends "base.html.jinja" %}
 {% set title = "Check SPF, DMARC & more for free | Domain Checkup" %}
+{% block head %}
+    <meta name="description" content="Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed guidance.">
+{% endblock %}
 {%block content %}
     <div class="px-4 py-5 text-center">
       <h1><a href="/" class="text-decoration-none text-reset"> {{ site_title }}</a></h1>
