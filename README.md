@@ -46,4 +46,4 @@ Use the supplied example systemd `.service` file to create a systemd service, an
 
 ## Pull requests welcome
 
-I hav't done much frontend dev work, so any help is welcomed.
+I have't done much frontend dev work, so any help is welcomed.
