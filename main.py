@@ -42,7 +42,7 @@ check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
 app = Flask(__name__)
 
 
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1, x_prefix=1)
 
 if app.debug is False:
     app.config.update(
@@ -155,3 +155,13 @@ def domain(domain):
     return render_template(
         "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
     )
+
+@app.get("/_whoami")
+def whoami():
+    from flask import request
+    return {
+        "url_root": request.url_root,
+        "scheme_via_headers": request.headers.get("X-Forwarded-Proto"),
+        "port_via_headers": request.headers.get("X-Forwarded-Port"),
+        "host": request.headers.get("Host"),
+    }
