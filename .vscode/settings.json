@@ -12,11 +12,19 @@
   "cSpell.words": [
     "BIMI",
     "DNSSEC",
+    "domaincheckup",
     "dotenv",
     "elif",
     "endfor",
+    "FEFF",
+    "noindex",
+    "referrerpolicy",
     "STARTTLS",
     "stylesheet",
-    "TLSA"
+    "TLSA",
+    "venv",
+    "webp",
+    "ZWNJ",
+    "ZWSP"
   ]
 }

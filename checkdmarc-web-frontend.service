@@ -1,0 +1,15 @@
+[Unit]
+Description=The checkdmarc frontend web application
+Documentation=https://github.com/domainaware/checkdmarc-web-frontend
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+WorkingDirectory=/opt/checkdmarc/checkdmarc-web-frontend
+ExecStart=/opt/checkdmarc/checkdmarc-web-frontend/venv/bin/waitress-serve --listen=127.0.0.1:8081 --trusted-proxy=127.0.0.1 main:app
+User=checkdmarc
+Restart=always
+RestartSec=5m
+
+[Install]
+WantedBy=multi-user.target

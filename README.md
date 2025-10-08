@@ -35,3 +35,15 @@ Why create or use this when there are already so many other websites that check 
   - Nameserver listing
 - No sales pitches
 - Fully open source
+
+## Running the web app locally
+
+First, setup the backend server. Then, create a new python virtual environment and run `pip install -U -r requirements.txt`.
+
+Configure the frontend using environment variables by copying `example.env` to `.env` and change the values.
+
+Use the supplied example systemd `.service` file to create a systemd service, and use the example `nginx.conf` file to configure NGINX to serve it.
+
+## Pull requests welcome
+
+I hav't done much frontend dev work, so any help is welcomed.
