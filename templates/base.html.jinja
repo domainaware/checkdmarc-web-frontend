@@ -12,7 +12,8 @@
   <meta property="og:description" content="{% block og_description %}Check your domain's email security in seconds for free with no sales pitch. 🚀 SPF & DMARC, and more made easy.{% endblock %}" />
   <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
   <meta property="og:url" content="{{ request.url }}" />
-  <meta name="og:image" content="{% block og_image %}{{ url_for('static', filename='card.webp') }}{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='card.webp') }}{% endblock %}" />
+  <meta property="og:image:alt" content="{% block og_image_alt %}}A card describing the features of {{ site_name }}{% endblock %}" />
   <meta property="og:site_name" content="{{ site_name }}" />
 
   {# Twitter #}
