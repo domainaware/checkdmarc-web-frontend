@@ -1,19 +1,23 @@
 <!doctype html>
 <html lang="en" data-bs-theme="dark">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
   <title>{{ (title ~ " | " if title else "") ~ site_name }}</title>
-  <meta name="description" content="{% block meta_description %}Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed guidance.{% endblock %}">
+  <meta name="description"
+    content="{% block meta_description %}Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed guidance.{% endblock %}">
 
   {# Open Graph #}
   <meta property="og:title" content="{% block og_title %}{{ site_name }} | Free DNS security analysis{% endblock %}" />
-  <meta property="og:description" content="{% block og_description %}Check your domain's email security in seconds for free with no sales pitch. 🚀 SPF & DMARC, and more made easy.{% endblock %}" />
+  <meta property="og:description"
+    content="{% block og_description %}Check your domain's email security in seconds for free with no sales pitch. 🚀 SPF & DMARC, and more made easy.{% endblock %}" />
   <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
-  <meta property="og:url" content="{{ request.url }}" />
+  <meta property="og:url" content="{{ canonical_url() }}" />
   <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='card.webp') }}{% endblock %}" />
-  <meta property="og:image:alt" content="{% block og_image_alt %}}A card describing the features of {{ site_name }}{% endblock %}" />
+  <meta property="og:image:alt"
+    content="{% block og_image_alt %}}A card describing the features of {{ site_name }}{% endblock %}" />
   <meta property="og:site_name" content="{{ site_name }}" />
 
   {# Twitter #}
@@ -34,7 +38,7 @@
       "description": "{% block ld_description %}Free SPF, DMARC, MX, MTA-STS, TLS-RPT, BIMI, and DNSSEC checker with clear pass/fail guidance.{% endblock %}"
     }
     </script>
-  <link rel="canonical" href="{{ request.url }}" />
+  <link rel="canonical" href="{{ canonical_url() }}" />
   {% block head %}{%endblock%}
   <link rel="icon" href="{{ url_for('static', filename='icons/favicon.svg') }}" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='icons/favicon-16x16.png') }}">

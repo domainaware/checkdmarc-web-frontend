@@ -4,10 +4,13 @@ import os
 import re
 import time
 import unicodedata
+from urllib.parse import urlsplit, urlunsplit
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, Response, redirect, render_template, request
+from flask import Flask, Response, redirect, render_template, request, url_for
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
 
@@ -39,6 +42,14 @@ check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
 app = Flask(__name__)
 
 
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
+
+if app.debug is False:
+    app.config.update(
+        PREFERRED_URL_SCHEME="https",  # so url_for(..., _external=True) uses https
+    )
+
+
 @app.context_processor
 def inject_common_vars():
     vars = {
@@ -48,6 +59,26 @@ def inject_common_vars():
         "debug": app.debug,
     }
     return vars
+
+
+@app.template_global()
+def canonical_url() -> str:
+    """
+    Build a canonical absolute URL for the current endpoint (no querystring).
+    Falls back to request.base_url if endpoint/view_args missing.
+    """
+    try:
+        if request.endpoint:
+            return url_for(
+                request.endpoint, **(request.view_args or {}), _external=True
+            )
+    except Exception:
+        pass
+    # Fallback: strip query/fragment from current URL
+    parts = list(urlsplit(request.url))
+    parts[3] = ""  # query
+    parts[4] = ""  # fragment
+    return urlunsplit(parts)
 
 
 @app.before_request
@@ -74,7 +105,7 @@ def normalize_domain(domain: str) -> str:
 
 
 @app.get("/")
-def show_home():
+def index():
     return render_template(
         "index.html.jinja",
     )
