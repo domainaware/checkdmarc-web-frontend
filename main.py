@@ -155,18 +155,3 @@ def domain(domain):
     return render_template(
         "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
     )
-
-@app.get("/_whoami")
-def whoami():
-    from flask import request
-    return {
-        "url_root": request.url_root,
-        "scheme_via_headers": request.headers.get("X-Forwarded-Proto"),
-        "port_via_headers": request.headers.get("X-Forwarded-Port"),
-        "host": request.headers.get("Host"),
-    }
-
-@app.get("/_whoami_raw")
-def whoami_raw():
-    from flask import request
-    return dict(request.headers)
