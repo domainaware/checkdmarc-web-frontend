@@ -7,17 +7,17 @@ import unicodedata
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, Response, redirect, render_template, request
 
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
 
 load_dotenv()
 
 required_env_vars = [
-    "SITE_TITLE",
+    "SITE_NAME",
     "BACKEND_URL",
-    "SITE_AUTHOR",
-    "SITE_AUTHOR_URL",
+    "SITE_OWNER",
+    "SITE_OWNER_URL",
     "BACKEND_API_KEY",
 ]
 missing_env_vars = []
@@ -28,15 +28,26 @@ if len(missing_env_vars):
     print(f"Error: Missing required environment variables {",".join(missing_env_vars)}")
     exit(1)
 
-site_title = os.environ["SITE_TITLE"]
-site_author = os.environ["SITE_AUTHOR"]
-site_author_url = os.environ["SITE_AUTHOR_URL"]
+site_name = os.environ["SITE_NAME"]
+site_owner = os.environ["SITE_OWNER"]
+site_owner_url = os.environ["SITE_OWNER_URL"]
 backend_url = os.environ["BACKEND_URL"].strip("/")
 backend_api_key = os.environ["BACKEND_API_KEY"]
 check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
 
 
 app = Flask(__name__)
+
+
+@app.context_processor
+def inject_common_vars():
+    vars = {
+        "site_name": site_name,
+        "site_owner": site_owner,
+        "site_owner_url": site_owner_url,
+        "debug": app.debug,
+    }
+    return vars
 
 
 @app.before_request
@@ -66,9 +77,6 @@ def normalize_domain(domain: str) -> str:
 def show_home():
     return render_template(
         "index.html.jinja",
-        site_title=site_title,
-        site_author=site_author,
-        site_author_url=site_author_url,
     )
 
 
@@ -81,10 +89,16 @@ def redirect_to_domain_page():
 @app.route("/domain/<domain>")
 def domain(domain):
     sample_domains = [
+        # Basic example
         "example.com",
+        # Proton has everything configured correctly (declined BIMI)
         "proton.me",
+        # Gmail oddly has DMARC sp=none
         "gmail.com",
-        "yahoo.com"
+        # Yahoo currently has MTA-STS in testing
+        "yahoo.com",
+        # change.org has a valid BIMI image with a mark certificate
+        "change.org",
     ]
     is_sample_domain = domain in sample_domains
 
@@ -101,23 +115,12 @@ def domain(domain):
     ):
         content = render_template(
             "domain-does-not-exist.html.jinja",
-            debug=app.debug,
-            site_title=site_title,
             domain=domain,
             is_sample_domain=is_sample_domain,
-            site_author=site_author,
-            site_author_url=site_author_url,
             elapsed_time=elapsed_time,
         )
         return Response(content, status=404)
 
     return render_template(
-        "domain.html.jinja",
-        debug=app.debug,
-        site_title=site_title,
-        domain=domain,
-        results=results,
-        site_author=site_author,
-        site_author_url=site_author_url,
-        elapsed_time=elapsed_time,
+        "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
     )

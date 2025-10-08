@@ -1,9 +1,9 @@
 {% extends "base.html.jinja" %}
-   {% block before_content %}
-   <main class="container" role="main"> 
-    <h1><a href="/" class="text-decoration-none text-reset">{{ site_title }}</a></h1>
-    {% endblock %}
-    {% block content %}{% endblock %}
-    {%block after_content%}
-   </main>
-   {%endblock%}
+{% block before_content %}
+<main class="container" role="main">
+   <h1><a href="/" class="text-decoration-none text-reset">{{ site_name }}</a></h1>
+   {% endblock %}
+   {% block content %}{% endblock %}
+   {%block after_content%}
+</main>
+{%endblock%}
