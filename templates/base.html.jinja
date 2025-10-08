@@ -16,8 +16,7 @@
   <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
   <meta property="og:url" content="{{ canonical_url() }}" />
   <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='card.webp') }}{% endblock %}" />
-  <meta property="og:image:alt"
-    content="{% block og_image_alt %}}A card describing the features of {{ site_name }}{% endblock %}" />
+  <meta property="og:image:alt" content="{% block og_image_alt %}A card describing the features of {{ site_name }}{% endblock %}" />
   <meta property="og:site_name" content="{{ site_name }}" />
 
   {# Twitter #}
