@@ -165,3 +165,8 @@ def whoami():
         "port_via_headers": request.headers.get("X-Forwarded-Port"),
         "host": request.headers.get("Host"),
     }
+
+@app.get("/_whoami_raw")
+def whoami_raw():
+    from flask import request
+    return dict(request.headers)
