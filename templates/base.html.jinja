@@ -15,7 +15,7 @@
   <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
   <meta name="description"content="{% block meta_description %}Instantly test SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for your domain with free, detailed guidance.{% endblock %}">
   <meta property="og:title" content="{% block og_title %}{{ site_name }} | Free DNS security analysis{% endblock %}" />
-  <meta property="og:description" content="{% block og_description %}Check your domain's email security in seconds for free with no sales pitch. 🚀 SPF & DMARC, and more made easy.{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}Check your domain's email security in seconds for free with no sales pitch. 🚀 SPF, DMARC, & more made easy.{% endblock %}" />
   <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
   <meta property="og:url" content="{{ canonical_url() }}" />
   <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='card.webp', _external=True) }}{% endblock %}" />
