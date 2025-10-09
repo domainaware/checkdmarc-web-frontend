@@ -182,7 +182,7 @@
         {% elif results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in
         ["reject","quarantine"] and results.dmarc.tags.sp.value in ["reject","quarantine"] %}
         <div class="alert alert-success text-center mb-3" role="alert">
-          This domain has an {{ results.dmarc.tags.p.value }} DMARC policy.
+          This domain has a {{ results.dmarc.tags.p.value }} DMARC policy.
         </div>
         {% else %}
         {% for warning in results.dmarc.warnings %}
