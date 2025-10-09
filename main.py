@@ -9,7 +9,6 @@ from urllib.parse import urlsplit, urlunsplit
 import requests
 from dotenv import load_dotenv
 from flask import Flask, Response, redirect, render_template, request, url_for
-from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
@@ -40,9 +39,6 @@ check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
 
 
 app = Flask(__name__)
-
-
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_port=1)
 
 if app.debug is False:
     app.config.update(
