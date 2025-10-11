@@ -10,7 +10,7 @@
             "type": "debugpy",
             "request": "launch",
             "module": "flask",
-            "args": ["--app", "main", "run", "--debug"]
+            "args": ["--app", "main", "run", "--debug", "--port", "5001"]
         }
     ]
 }
