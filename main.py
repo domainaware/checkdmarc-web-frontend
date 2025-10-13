@@ -33,6 +33,7 @@ RFC_CITATION = re.compile(
     re.IGNORECASE | re.VERBOSE,
 )
 
+
 def _rfc_anchor(section: str) -> str:
     """
     Map a section string to rfc-editor HTML anchors:
@@ -55,6 +56,7 @@ def _rfc_anchor(section: str) -> str:
     slug = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
     return f"section-{slug}"
 
+
 def link_rfc(value: str) -> Markup:
     """
     Replace all RFC citations in the text with <a> links to rfc-editor.org.
@@ -72,6 +74,7 @@ def link_rfc(value: str) -> Markup:
         return f'<a href="{url}">{visible}</a>'
 
     return Markup(RFC_CITATION.sub(_repl, escape(value)))
+
 
 load_dotenv()
 
