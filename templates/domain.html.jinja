@@ -1,8 +1,10 @@
 {% extends "base.html.jinja" %}
 {% set title = domain ~ " - SPF, DMARC & more" %}
-{% block meta_description %}Check SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }}. Get instant results with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
+{% block meta_description %}Check SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }}. Get instant results
+with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
 {% block og_title %}Domain security report for {{ domain }} | {{site_name}}{% endblock %}
-{% block og_description %}Complete analysis of SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }} by {{site_name }}.{% endblock %}
+{% block og_description %}Complete analysis of SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }} by
+{{site_name }}.{% endblock %}
 {% block head %}
 {% if not is_sample_domain %}
 <meta name="robots" content="noindex,follow">
@@ -86,75 +88,58 @@
         {% if "record" in results.spf %}
         <p>Record: <code>{{ results.spf.record }}</code>
           {% if "parsed" in results.spf %}
-          <br>all: <code>
-          {% if results.spf.parsed.redirect %}
-          {{ results.spf.parsed.redirect.parsed.all }}
-          {% else %}
-          {{ results.spf.parsed.all }}
-          {% endif %}
-          </code>
+          <br>all: <code>{{ results.spf.parsed.all }}</code>
         </p>
         {% endif %}
         {% endif %}
         {% if "dns_lookups" in results.spf %}
         <p>DNS lookups used: {{ results.spf.dns_lookups }}/10<br>
-          Void lookups: {{ results.spf.dns_void_lookups }}/2
+          Void lookups: {{ results.spf.void_dns_lookups }}/2
         </p>
         {% endif %}
         {% if "parsed" in results.spf %}
-        {% for entry in results.spf.parsed.pass %}
-        {% if "%{" in entry.value %}
+        {% for mechanism in results.spf.parsed.mechanisms %}
+        {% if "%{" in mechanism.value %}
         <div class="alert alert-info text-center" role="alert">
-          <code>{{ entry.mechanism }}:{{ entry.value }}</code> uses SPF macros so a server (i.e., hosted SPF services)
+          <code>{{ mechanism.mechanism }}:{{ mechanism.value }}</code> uses SPF macros so a server (i.e., a hosted SPF
+          service)
           can dynamically indicate if an IP address should be accepted in SPF validation.
         </div>
         {% endif %}
         {% endfor %}
-        {% for include in results.spf.parsed.include %}
-        {% if "%{" in include.domain %}
-        <div class="alert alert-info text-center" role="alert">
-          <code>include:{{ include.domain }}</code> uses SPF macros so a server (i.e., hosted SPF services) can
-          dynamically indicate if an IP address should be accepted in SPF validation.
-        </div>
-        {% endif %}
-        {% endfor %}
-        {% if results.spf.parsed.include|length > 0 or (results.spf.parsed.redirect and
-        results.spf.parsed.redirect.parsed.include|length > 0) %}
-        <p>The following table contains a list of DNS lookups used by each include, including the <code>include</code>
-          lookup itself.</p>
+        {% set lookup_mechanisms =
+        results.spf.parsed.mechanisms
+        | selectattr("dns_lookups", "defined")
+        | selectattr("dns_lookups", "gt", 0)
+        | list %}
+        {% if lookup_mechanisms %}
+        <h5 class="text-center">DNS Lookups</h5>
         <div class="table-responsive">
           <table class="table table-bordered table-striped">
-            <caption class="visually-hidden">SPF include DNS lookups</caption>
-            <thead>
-              <tr>
-                <th scope="col">Domain</th>
-                <th scope="col">DNS lookups</th>
-              </tr>
+            <caption class="visually-hidden">SPF mechanisms that require DNS lookups/caption>
+            <tr>
+              <th>Mechanism</th>
+              <th>Lookups</th>
+            </tr>
             </thead>
             <tbody>
-              {% for include in results.spf.parsed.include %}
+              {% for mechanism in lookup_mechanisms %}
+              {% if mechanism.void_dns_lookups %}
+              <tr class="table-danger">
+                <td>{{ mechanism.mechanism ~ ":" ~ mechanism.value }}</td>
+                <td>{{ mechanism.dns_lookups }}<span class="visually-hidden">Void DNS lookup</span></td>
+                {%else%}
               <tr>
-                <td>{{ include.domain }}</td>
-                {% if "%{" in include.domain %}
-                <td>{{ include.dns_lookups }}</td>
-                {% else %}
-                <td>{{ include.dns_lookups + 1 }}</td>
+                <td>{{ mechanism.mechanism ~ ":" ~ mechanism.value }}</td>
+                <td>{{ mechanism.dns_lookups }}</td>
                 {% endif %}
               </tr>
               {% endfor %}
-              {% if results.spf.parsed.redirect %}
-              {% for include in results.spf.parsed.redirect.parsed.include %}
-              <tr>
-                <td>{{ include.domain }}</td>
-                <td>{{ include.dns_lookups + 1 }}</td>
-              </tr>
-              {% endfor %}
-              {% endif %}
             </tbody>
           </table>
         </div>
         {% endif %}
-        {% endif %}
+        {%endif%}
       </div> <!-- End padded wrapper -->
     </div> <!-- End column -->
 
@@ -514,7 +499,9 @@
         <div class="intro mb-3">
           <h4 class="text-center">TLS-RPT</h4>
           <p>SMTP TLS Reporting (TLS-RPT) is a reporting mechanism and format by which sending systems can share
-            statistics and specific information about potential failures to establish encrypted channels with recipient domains. Recipient domains can then use this information to both detect potential attacks and diagnose unintentional misconfigurations.</p>
+            statistics and specific information about potential failures to establish encrypted channels with recipient
+            domains. Recipient domains can then use this information to both detect potential attacks and diagnose
+            unintentional misconfigurations.</p>
           <p>SMTP TLS Reporting is defined in <a href="https://datatracker.ietf.org/doc/html/rfc8460">RFC 8460</a>.
           </p>
         </div> <!-- End intro -->
