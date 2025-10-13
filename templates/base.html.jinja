@@ -26,13 +26,37 @@
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <style>
     @media print {
-      body,
-      body *:not(code):not(code *) {
-        color: #000 !important;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-    }
+  /* Force everything black */
+  body,
+  body * {
+    color: #000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Restore <code> inline color (Bootstrap default) */
+  code {
+    color: #e83e8c !important;
+  }
+
+  /* Restore <pre> block color */
+  pre,
+  pre code {
+    color: #212529 !important;  /* Bootstrap default text color */
+    background-color: #f8f9fa !important; /* If you want to keep the gray background */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Restore alerts to their original colors */
+  .alert {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color: inherit !important;       /* keeps the alert’s own text color */
+    background-color: inherit !important;
+    border-color: inherit !important;
+  }
+}
   </style>
     {% block head %}{%endblock%}
     <script type="application/ld+json">
