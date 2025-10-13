@@ -71,7 +71,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% if results.spf.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.spf.error }}
+          {{ results.spf.error|link_rfc }}
         </div>
         {% elif results.spf.valid %}
         <div class="alert alert-success text-center mb-3" role="alert">
@@ -81,7 +81,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% if "warnings" in results.spf %}
         {% for warning in results.spf.warnings %}
         <div class="alert alert-warning text-center mb-3" role="alert">
-          {{warning}}
+          {{ warning|link_rfc }}
         </div>
         {% endfor %}
         {% endif %}
@@ -165,7 +165,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div> <!-- End intro -->
         {% if results.dmarc.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.dmarc.error }}
+          {{ results.dmarc.error|link_rfc }}
         </div>
         {% elif results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in
         ["reject","quarantine"] and results.dmarc.tags.sp.value in ["reject","quarantine"] %}
@@ -174,7 +174,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% else %}
         {% for warning in results.dmarc.warnings %}
-        <div class="alert alert-warning text-center mb-3" role="alert">{{ warning }}</div>
+        <div class="alert alert-warning text-center mb-3" role="alert">{{ warning|link_rfc }}</div>
         {% endfor %}
         {% endif %}
         {% if results.dmarc.record %}
@@ -236,7 +236,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% if results.bimi.error %}
         {% if "A BIMI record does not exist" in results.bimi.error %}
         <div class="alert alert-info text-center mb-3" role="alert">
-          {{ results.bimi.error }}
+          {{ results.bimi.error|link_rfc }}
         </div>
         {% else %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -255,7 +255,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endif %}
         {% for warning in results.bimi.warnings %}
         <div class="alert alert-warning text-center mb-3" role="alert">
-          {{ warning }}
+          {{ warning|link_rfc }}
         </div>
         {% endfor %}
         {% if results.bimi.record %}
@@ -292,7 +292,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <h5 class="text-center">Image</h5>
         {% if "error" in results.bimi.image %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.bimi.image.error }}
+          {{ results.bimi.image.error|link_rfc }}
         </div>
         {% else %}
         <img alt="{{ results.bimi.image.title }}" src="{{ results.bimi.tags.l.value }}" referrerpolicy="no-referrer"
@@ -316,12 +316,12 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <h5 class="text-center">Certificate</h5>
         {% if "error" in results.bimi.certificate %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.bimi.certificate.error }}
+          {{ results.bimi.certificate.error|link_rfc }}
         </div>
         {% else %}
         {% for error in results.bimi.certificate.validation_errors %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ error }}
+          {{ error|link_rfc }}
         </div>
         {% endfor %}
         <h6 class="text-center">Issuer</h6>
@@ -450,7 +450,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div> <!-- End intro -->
         {% if results.mta_sts.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.mta_sts.error }}
+          {{ results.mta_sts.error|link_rfc }}
         </div>
         {% else %}
         {% if results.mta_sts.policy.mode == "enforce" %}
@@ -468,7 +468,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endif %}
         {% for warning in results.mta_sts.warnings %}
         <div class="alert alert-warning text-center" role="alert">
-          {{ warning }}
+          {{ warning|link_rfc }}
         </div>
         {% endfor %}
         <div class="table-responsive">
@@ -518,7 +518,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div> <!-- End intro -->
         {% if results.smtp_tls_reporting.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
-          {{ results.smtp_tls_reporting.error }}
+          {{ results.smtp_tls_reporting.error|link_rfc }}
         </div>
         {% else %}
         <div class="alert alert-success text-center mb-3" role="alert">
@@ -526,7 +526,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% for warning in results.smtp_tls_reporting.warnings %}
         <div class="alert alert-warning text-center" role="alert">
-          {{ warning }}
+          {{ warning|link_rfc }}
         </div>
         {% endfor %}
         <div class="table-responsive">
