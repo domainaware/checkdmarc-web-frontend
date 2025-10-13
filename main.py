@@ -68,7 +68,7 @@ def link_rfc(value: str) -> Markup:
         section = re.sub(r"\s+", " ", raw_section).rstrip(").,;: ")
         fragment = _rfc_anchor(section)
         url = f"https://www.rfc-editor.org/rfc/rfc{rfc}.html#{fragment}"
-        visible = f"(RFC {rfc} § {escape(section)})"
+        visible = f"RFC {rfc} § {escape(section)}"
         return f'<a href="{url}">{visible}</a>'
 
     return Markup(RFC_CITATION.sub(_repl, escape(value)))
