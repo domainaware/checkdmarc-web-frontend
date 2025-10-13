@@ -26,7 +26,7 @@
   }
 
   a {
-    color: #6ea8fe;
+    color: #6ea8fe   !important;
   }
 
   /* <pre> block formatting */
