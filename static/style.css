@@ -1,7 +1,6 @@
 
 /* Make Bootstrap printer-friendly */
 
-
 @media print {
   /* Force light theme base */
   body,
@@ -24,7 +23,10 @@
   /* <code> inline color */
   code {
     color: #e83e8c !important;
-    /*background-color: #fff !important;*/ /* Remove dark bg for better print */
+  }
+
+  a {
+    color: #6ea8fe;
   }
 
   /* <pre> block formatting */
