@@ -112,6 +112,11 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         | selectattr("dns_lookups", "defined")
         | selectattr("dns_lookups", "gt", 0)
         | list %}
+        {% if results.spf.parsed.redirect %}
+        {% set lookup_mechanisms =
+        results.spf.parsed.redirect.parsed.mechanisms
+        | list %}
+        {% endif %}
         {% if lookup_mechanisms %}
         <h5 class="text-center">DNS Lookups</h5>
         <div class="table-responsive">
@@ -123,6 +128,12 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
             </tr>
             </thead>
             <tbody>
+              {% if results.spf.parsed.redirect %}
+              <tr>
+                <td>redirect:{{ results.spf.parsed.redirect.domain }}</td>
+                <td>1</td>
+              </tr>
+              {% endif %}
               {% for mechanism in lookup_mechanisms %}
               {% if mechanism.void_dns_lookups %}
               <tr class="table-danger">
