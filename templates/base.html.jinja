@@ -59,14 +59,12 @@
     print-color-adjust: exact;
   }
 
-  /* Alerts: keep their background and border color */
   .alert {
+    border-color: var(--bs-alert-border-color) !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    background-color: inherit !important;
-    color: inherit !important;
-    border-color: inherit !important;
   }
+
   .alert * {
     color: inherit !important;
   }
