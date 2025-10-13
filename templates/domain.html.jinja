@@ -92,11 +92,6 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </p>
         {% endif %}
         {% endif %}
-        {% if "dns_lookups" in results.spf %}
-        <p>DNS lookups used: {{ results.spf.dns_lookups }}/10<br>
-          Void lookups: {{ results.spf.void_dns_lookups }}/2
-        </p>
-        {% endif %}
         {% if "parsed" in results.spf %}
         {% for mechanism in results.spf.parsed.mechanisms %}
         {% if "%{" in mechanism.value %}
@@ -119,6 +114,11 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endif %}
         {% if lookup_mechanisms %}
         <h5 class="text-center">DNS Lookups</h5>
+        {% if "dns_lookups" in results.spf %}
+        <p>DNS lookups used: {{ results.spf.dns_lookups }}/10<br>
+          Void lookups: {{ results.spf.void_dns_lookups }}/2
+        </p>
+        {% endif %}
         <div class="table-responsive">
           <table class="table table-bordered table-striped">
             <caption class="visually-hidden">SPF mechanisms that require DNS lookups/caption>
