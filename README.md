@@ -15,7 +15,7 @@ Why create or use this when there are already so many other websites that check 
   - SPF
     - Record validation
     - Counting of DNS lookups and void lookups
-    - Counting of lookups per include
+    - Counting of lookups per mechanism
   - DMARC
     - Validation and parsing of DMARC records
     - Shows warnings when the DMARC record is made ineffective by `pct` or `sp` values
