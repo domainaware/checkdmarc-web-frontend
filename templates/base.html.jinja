@@ -25,36 +25,50 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <style>
-    @media print {
-  /* Force everything black */
+@media print {
+  /* FORCE LIGHT THEME BASE */
   body,
-  body * {
+  .bg-dark,
+  .navbar-dark,
+  .text-light,
+  [data-bs-theme="dark"] {
+    background-color: #fff !important;
     color: #000 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
   }
 
-  /* Restore <code> inline color (Bootstrap default) */
+  /* Override any element with dark background */
+  * {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Re-apply exceptions AFTER the global reset */
+
+  /* <code> inline color */
   code {
     color: #e83e8c !important;
+    background-color: #fff !important; /* Remove dark bg for better print */
   }
 
-  /* Restore <pre> block color */
+  /* <pre> block formatting */
   pre,
   pre code {
-    color: #212529 !important;  /* Bootstrap default text color */
-    background-color: #f8f9fa !important; /* If you want to keep the gray background */
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
 
-  /* Restore alerts to their original colors */
+  /* Alerts: keep their background and border color */
   .alert {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    color: inherit !important;       /* keeps the alert’s own text color */
     background-color: inherit !important;
+    color: inherit !important;
     border-color: inherit !important;
+  }
+  .alert * {
+    color: inherit !important;
   }
 }
   </style>
@@ -73,6 +87,7 @@
       },
       "description": "{% block ld_description %}Free SPF, DMARC, MX, MTA-STS, TLS-RPT, BIMI, and DNSSEC checker with clear pass/fail guidance.{% endblock %}"
     }
+    
     </script>
 </head>
 <body>
