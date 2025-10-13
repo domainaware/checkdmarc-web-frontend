@@ -24,6 +24,16 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <style>
+    @media print {
+      body,
+      body *:not(code):not(code *) {
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
     {% block head %}{%endblock%}
     <script type="application/ld+json">
     {
