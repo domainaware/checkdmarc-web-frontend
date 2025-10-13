@@ -1,0 +1,48 @@
+
+/* Make Bootstrap printer-friendly */
+
+
+@media print {
+  /* Force light theme base */
+  body,
+  .bg-dark,
+  .navbar-dark,
+  .text-light,
+  [data-bs-theme="dark"] {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Override any element that has a dark background */
+  * {
+    background-color: #fff !important;
+    color: #000 !important;
+  }
+
+  /* Re-apply exceptions after the global reset */
+
+  /* <code> inline color */
+  code {
+    color: #e83e8c !important;
+    /*background-color: #fff !important;*/ /* Remove dark bg for better print */
+  }
+
+  /* <pre> block formatting */
+  pre,
+  pre code {
+    color: #212529 !important;
+    background-color: #f8f9fa !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .alert {
+    border-color: var(--bs-alert-border-color) !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .alert * {
+    color: inherit !important;
+  }
+}

@@ -24,52 +24,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <style>
-@media print {
-  /* FORCE LIGHT THEME BASE */
-  body,
-  .bg-dark,
-  .navbar-dark,
-  .text-light,
-  [data-bs-theme="dark"] {
-    background-color: #fff !important;
-    color: #000 !important;
-  }
-
-  /* Override any element with dark background */
-  * {
-    background-color: #fff !important;
-    color: #000 !important;
-  }
-
-  /* Re-apply exceptions AFTER the global reset */
-
-  /* <code> inline color */
-  code {
-    color: #e83e8c !important;
-    background-color: #fff !important; /* Remove dark bg for better print */
-  }
-
-  /* <pre> block formatting */
-  pre,
-  pre code {
-    color: #212529 !important;
-    background-color: #f8f9fa !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .alert {
-    border-color: var(--bs-alert-border-color) !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-
-  .alert * {
-    color: inherit !important;
-  }
-}
-  </style>
+  <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet"?
     {% block head %}{%endblock%}
     <script type="application/ld+json">
     {
