@@ -120,7 +120,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </p>
         {% endif %}
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">SPF mechanisms that require DNS lookups/caption>
             <tr>
               <th>Mechanism</th>
@@ -186,7 +186,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endif %}
         {% if "tags" in results.dmarc %}
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">DMARC record tag values</caption>
             <thead>
               <tr>
@@ -267,7 +267,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endif %}
         {% if "tags" in results.bimi %}
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">BIMI record tag values</caption>
             <thead>
               <tr>
@@ -298,7 +298,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <img alt="{{ results.bimi.image.title }}" src="{{ results.bimi.tags.l.value }}" referrerpolicy="no-referrer"
           class="mx-auto d-block mb-4" width="50%" loading="lazy" decoding="async" />
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">Image metadata</caption>
             <tbody>
               {% for key, value in results.bimi.image.items() %}
@@ -326,7 +326,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% endfor %}
         <h6 class="text-center">Issuer</h6>
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">Certificate issuer metadata</caption>
             <tbody>
               {% for key, value in results.bimi.certificate.issuer.items() %}
@@ -340,7 +340,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         <h6 class="text-center">Subject</h6>
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">Certificate subject metadata</caption>
             <tbody>
               {% for key, value in results.bimi.certificate.subject.items() %}
@@ -384,7 +384,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       {% else %}
       {% for host in results.mx.hosts %}
       <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped table-sm">
           <tbody>
             <tr>
               <th scope="row">Preference</th>
@@ -472,7 +472,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% endfor %}
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">MTA-STS configuration</caption>
             <tbody>
               <tr>
@@ -530,7 +530,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% endfor %}
         <div class="table-responsive">
-          <table class="table table-bordered table-striped">
+          <table class="table table-bordered table-striped table-sm">
             <caption class="visually-hidden">SMTP TLS reporting tags</caption>
             <thead>
               <tr>
@@ -586,7 +586,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       {% endfor %}
       <p class="text-center">Record: <code>{{ results.soa.record }}</code></p>
       <div class="table-responsive">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped table-sm">
           <caption class="visually-hidden">SOA record values</caption>
           <tbody>
             {% for key, value in results.soa["values"].items() %}
