@@ -8,7 +8,7 @@ from urllib.parse import urlsplit, urlunsplit
 
 import requests
 from dotenv import load_dotenv
-from flask import Flask, Response, redirect, render_template, request, url_for
+from flask import Flask, redirect, render_template, request, url_for
 from markupsafe import Markup, escape
 
 
@@ -98,7 +98,7 @@ site_owner = os.environ["SITE_OWNER"]
 site_owner_url = os.environ["SITE_OWNER_URL"]
 backend_url = os.environ["BACKEND_URL"].strip("/")
 backend_api_key = os.environ["BACKEND_API_KEY"]
-check_smtp_tls =  os.getenv("CHECK_SMTP_TLS")
+check_smtp_tls = os.getenv("CHECK_SMTP_TLS")
 if check_smtp_tls:
     check_smtp_tls = check_smtp_tls.lower() in ["true", 1]
 
@@ -120,6 +120,16 @@ def inject_common_vars():
         "debug": app.debug,
     }
     return vars
+
+
+@app.errorhandler(404)
+def not_found():
+    render_template("not-found.html.jinja"), 404
+
+
+@app.errorhandler(500)
+def internal_error():
+    render_template("internal-error.html.jinja"), 500
 
 
 @app.template_global()
@@ -201,21 +211,19 @@ def domain(domain):
         get_params["check_smtp_tls"] = check_smtp_tls
     results = requests.get(f"{backend_url}/domain/{domain}", params=get_params)
     if results.status_code == 400:
-        content=render_template("not-a-domain.html.jinja", domain=domain)
-        return Response(content, status=400)
+        return render_template("not-a-domain.html.jinja", domain=domain), 400
     results = results.json()
     elapsed_time = round(time.perf_counter() - start_time, 3)
     if (
         "error" in results["soa"]
         and "does not exist" in results["soa"]["error"].lower()
     ):
-        content = render_template(
+        render_template(
             "domain-does-not-exist.html.jinja",
             domain=domain,
             is_sample_domain=is_sample_domain,
             elapsed_time=elapsed_time,
-        )
-        return Response(content, status=404)
+        ), 404
 
     return render_template(
         "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
