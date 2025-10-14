@@ -15,6 +15,7 @@
     width: 100% !important;
     table-layout: auto !important;
   }
+
   th,
   td {
     white-space: normal !important;
@@ -68,5 +69,4 @@
   .alert * {
     color: inherit !important;
   }
-
 }
