@@ -98,7 +98,9 @@ site_owner = os.environ["SITE_OWNER"]
 site_owner_url = os.environ["SITE_OWNER_URL"]
 backend_url = os.environ["BACKEND_URL"].strip("/")
 backend_api_key = os.environ["BACKEND_API_KEY"]
-check_smtp_tls = bool(os.getenv("CHECK_SMTP_TLS"))
+check_smtp_tls =  os.getenv("CHECK_SMTP_TLS")
+if check_smtp_tls:
+    check_smtp_tls = check_smtp_tls.lower() in ["true", 1]
 
 app = Flask(__name__)
 app.jinja_env.filters["link_rfc"] = link_rfc
@@ -197,7 +199,11 @@ def domain(domain):
     get_params = {"api_key": backend_api_key}
     if check_smtp_tls:
         get_params["check_smtp_tls"] = check_smtp_tls
-    results = requests.get(f"{backend_url}/domain/{domain}", params=get_params).json()
+    results = requests.get(f"{backend_url}/domain/{domain}", params=get_params)
+    if results.status_code == 400:
+        content=render_template("not-a-domain.html.jinja", domain=domain)
+        return Response(content, status=400)
+    results = results.json()
     elapsed_time = round(time.perf_counter() - start_time, 3)
     if (
         "error" in results["soa"]
