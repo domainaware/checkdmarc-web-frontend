@@ -2,6 +2,27 @@
 /* Make Bootstrap printer-friendly */
 
 @media print {
+
+  @page { margin: 12mm; } /* nice page padding */
+
+  .container {
+    max-width: none !important;
+    width: auto !important;
+  }
+
+  /* Let tables grow and wrap */
+  table {
+    width: 100% !important;
+    table-layout: auto !important;
+  }
+  th,
+  td {
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    padding: 0.3rem !important; /* optional tighter print padding */
+  }
+
   /* Force light theme base */
   body,
   .bg-dark,
@@ -48,14 +69,4 @@
     color: inherit !important;
   }
 
-
-   /* Allow wrapping in all table cells */
-  table,
-  .table,
-  .table td,
-  .table th {
-    white-space: normal !important;   /* allow line breaks */
-    word-break: break-word !important; /* break long words/URLs if needed */
-    overflow-wrap: anywhere !important; /* modern, more aggressive wrapping */
-  }
 }
