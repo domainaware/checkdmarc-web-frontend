@@ -123,13 +123,13 @@ def inject_common_vars():
 
 
 @app.errorhandler(404)
-def not_found():
-    render_template("not-found.html.jinja"), 404
+def not_found(error):
+    return render_template("not-found.html.jinja"), 404
 
 
 @app.errorhandler(500)
-def internal_error():
-    render_template("internal-error.html.jinja"), 500
+def internal_error(error):
+    return render_template("internal-error.html.jinja"), 500
 
 
 @app.template_global()
