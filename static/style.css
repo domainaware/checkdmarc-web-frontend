@@ -47,4 +47,15 @@
   .alert * {
     color: inherit !important;
   }
+
+
+   /* Allow wrapping in all table cells */
+  table,
+  .table,
+  .table td,
+  .table th {
+    white-space: normal !important;   /* allow line breaks */
+    word-break: break-word !important; /* break long words/URLs if needed */
+    overflow-wrap: anywhere !important; /* modern, more aggressive wrapping */
+  }
 }
