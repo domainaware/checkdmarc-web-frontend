@@ -63,12 +63,12 @@ def inject_common_vars():
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template("not-found.html.jinja"), 404
+    return render_template("error.html.jinja", error="Not found"), 404
 
 
 @app.errorhandler(500)
 def internal_error(error):
-    return render_template("internal-error.html.jinja"), 500
+    return render_template("error.html.jinja", error="Internal error"), 500
 
 
 @app.template_global()
@@ -150,23 +150,24 @@ def domain(domain):
         get_params["check_smtp_tls"] = check_smtp_tls
     results = requests.get(f"{backend_url}/domain/{domain}", params=get_params)
     if results.status_code == 400:
-        return render_template("not-a-domain.html.jinja", domain=domain), 400
+        error = f"{domain} is not a domain"
+        return render_template("error.html.jinja", error=error), 400
     results = results.json()
     elapsed_time = round(time.perf_counter() - start_time, 3)
     if (
         "error" in results["soa"]
         and "does not exist" in results["soa"]["error"].lower()
     ):
+        error = f"{domain} does not exist"
         return (
-            render_template(
-                "domain-does-not-exist.html.jinja",
-                domain=domain,
-                is_sample_domain=is_sample_domain,
-                elapsed_time=elapsed_time,
-            ),
+            render_template("error.html.jinja", error=error),
             404,
         )
 
     return render_template(
-        "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
+        "domain.html.jinja",
+        domain=domain,
+        results=results,
+        is_sample_domain=is_sample_domain,
+        elapsed_time=elapsed_time,
     )

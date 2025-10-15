@@ -1,11 +1,12 @@
 {% extends "page.html.jinja"%}
-{% set title = "Internal error" %}
+{% set title = error %}
 {% block meta_description %}{% endblock %}
-{% block og_title %}Domain does not exist{% endblock %}
+{% block og_title %}{% endblock %}
 {% block og_description %}{% endblock %}
 
 {% block content %}
     <div class="row justify-content-center">
-      <h2 class="text-center">Internal error</h2>
+      <h2 class="text-center">{{ error }}</h2>
+      {% block error_content %}{% endblock %}
     </div>
 {% endblock %}
