@@ -85,7 +85,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% endfor %}
         {% endif %}
-        {% if "record" in results.spf %}
+        {% if "record" in results.spf and results.spf.record is not none %}
         <p>Record: <code>{{ results.spf.record }}</code>
           {% if "parsed" in results.spf %}
           <br>all: <code>{{ results.spf.parsed.all }}</code>
