@@ -9,72 +9,11 @@ from urllib.parse import urlsplit, urlunsplit
 import requests
 from dotenv import load_dotenv
 from flask import Flask, redirect, render_template, request, url_for
-from markupsafe import Markup, escape
+
+from filters.rfc_links import link_rfc
 
 
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
-RFC_CITATION = re.compile(
-    r"""
-    (?<!\w)                         # don't match inside a larger word
-    RFC\s* (?P<rfc>\d+)            # RFC number
-    \s*,?\s*
-    (?:
-        §{1,2} |                    # "§" or "§§"
-        section                     # or "section"
-    )
-    \s*
-    (?P<section>                    # capture section text conservatively
-        [^\s\]\),;:.]+              # token (e.g., 3.6.1 or A.1)
-        (?:\.[^\s\]\),;:.]+)*       # allow further .parts
-        (?:-[^\s\]\),;:.]+)*        # allow hyphen bits (rare)
-    )
-    (?=[\s\]\),;:.]|$)              # stop before terminators/EOL
-    """,
-    re.IGNORECASE | re.VERBOSE,
-)
-
-
-def _rfc_anchor(section: str) -> str:
-    """
-    Map a section string to rfc-editor HTML anchors:
-      - "4.1.2"     -> section-4.1.2
-      - "A", "A.1"  -> appendix-a, appendix-a-1
-    Fallback: slug under 'section-...'
-    """
-    s = section.strip().rstrip(").,;:")  # defensive trim
-
-    if re.fullmatch(r"\d+(?:\.\d+)*", s):  # numeric chain
-        return f"section-{s}"
-
-    m = re.fullmatch(r"([A-Za-z])(?:\.(\d+(?:\.\d+)*))?", s)
-    if m:  # appendix style
-        head = m.group(1).lower()
-        tail = (m.group(2) or "").replace(".", "-")
-        return f"appendix-{head}{('-' + tail) if tail else ''}"
-
-    # Fallback: conservative slug (rare in RFCs but safe)
-    slug = re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower()
-    return f"section-{slug}"
-
-
-def link_rfc(value: str) -> Markup:
-    """
-    Replace all RFC citations in the text with <a> links to rfc-editor.org.
-    Input is fully escaped first; only our injected <a> tags are trusted.
-    """
-
-    def _repl(m: re.Match) -> str:
-        rfc = m.group("rfc")
-        # normalize whitespace + strip trailing punctuation from the section
-        raw_section = m.group("section")
-        section = re.sub(r"\s+", " ", raw_section).rstrip(").,;: ")
-        fragment = _rfc_anchor(section)
-        url = f"https://www.rfc-editor.org/rfc/rfc{rfc}.html#{fragment}"
-        visible = f"RFC {rfc} § {escape(section)}"
-        return f'<a href="{url}">{visible}</a>'
-
-    return Markup(RFC_CITATION.sub(_repl, escape(value)))
-
 
 load_dotenv()
 

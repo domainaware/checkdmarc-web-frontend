@@ -67,7 +67,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>Sender Policy Framework (SPF) authenticates email by checking the sending email server IP address against
             a list of domains provided by the SPF record of the envelope from domain. The SPF record can include other
             records, with up to 10 DNS lookups.</p>
-          <p>The SPF standard is defined in <a href="https://www.rfc-editor.org/rfc/rfc7208.html">RFC 7208</a>.</p>
+          <p>The SPF standard is defined in {{"RFC 7208"| link_rfc }}</a>.</p>
         </div>
         {% if results.spf.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -446,7 +446,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
             their ability to receive Transport Layer Security (TLS) secure SMTP connections and to specify whether
             sending SMTP servers should refuse to deliver to MX hosts that do not offer TLS with a trusted server
             certificate.</p>
-          <p>MTA-STS is defined in <a href="https://datatracker.ietf.org/doc/html/rfc8461">RFC 8461</a>.</p>
+          <p>MTA-STS is defined in {{ "RFC 8461"| link_rfc}}.</p>
         </div> <!-- End intro -->
         {% if results.mta_sts.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -513,8 +513,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
             statistics and specific information about potential failures to establish encrypted channels with recipient
             domains. Recipient domains can then use this information to both detect potential attacks and diagnose
             unintentional misconfigurations.</p>
-          <p>SMTP TLS Reporting is defined in <a href="https://datatracker.ietf.org/doc/html/rfc8460">RFC 8460</a>.
-          </p>
+          <p>SMTP TLS Reporting is defined in {{ "RFC 8460" | link_rfc }}.</p>
         </div> <!-- End intro -->
         {% if results.smtp_tls_reporting.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
