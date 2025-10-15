@@ -33,11 +33,11 @@ CITATION = re.compile(
 )
 
 # --- Helper patterns (precompiled) -------------------------------------------
-RE_NUMERIC_SECTION   = re.compile(r"\A\d+(?:\.\d+)*\Z")          # 3.4.5
-RE_APPENDIX_SECTION  = re.compile(r"\A([A-Za-z])(?:\.(\d+(?:\.\d+)*))?\Z")
-RE_NONALNUM          = re.compile(r"[^A-Za-z0-9]+")
-RE_COLLAPSE_WS       = re.compile(r"\s+")
-RE_TRAILING_PUNCT    = re.compile(r"[).,;: ]+$")                 # trim end junk
+RE_NUMERIC_SECTION = re.compile(r"\A\d+(?:\.\d+)*\Z")  # 3.4.5
+RE_APPENDIX_SECTION = re.compile(r"\A([A-Za-z])(?:\.(\d+(?:\.\d+)*))?\Z")
+RE_NONALNUM = re.compile(r"[^A-Za-z0-9]+")
+RE_COLLAPSE_WS = re.compile(r"\s+")
+RE_TRAILING_PUNCT = re.compile(r"[).,;: ]+$")  # trim end junk
 
 
 def _rfc_anchor(section: str) -> str:
@@ -70,12 +70,12 @@ def _replacement(m: re.Match) -> str:
 
     if raw_section:
         # Normalize whitespace and trim trailing punctuation for the anchor
-        section  = RE_COLLAPSE_WS.sub(" ", raw_section)
-        section  = RE_TRAILING_PUNCT.sub("", section)
+        section = RE_COLLAPSE_WS.sub(" ", raw_section)
+        section = RE_TRAILING_PUNCT.sub("", section)
         fragment = "#" + _rfc_anchor(section)
     else:
         # No section: link to the document root (no fragment)
-        section  = None
+        section = None
         fragment = ""
 
     if rfc:

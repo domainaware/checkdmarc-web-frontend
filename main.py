@@ -157,12 +157,15 @@ def domain(domain):
         "error" in results["soa"]
         and "does not exist" in results["soa"]["error"].lower()
     ):
-        render_template(
-            "domain-does-not-exist.html.jinja",
-            domain=domain,
-            is_sample_domain=is_sample_domain,
-            elapsed_time=elapsed_time,
-        ), 404
+        return (
+            render_template(
+                "domain-does-not-exist.html.jinja",
+                domain=domain,
+                is_sample_domain=is_sample_domain,
+                elapsed_time=elapsed_time,
+            ),
+            404,
+        )
 
     return render_template(
         "domain.html.jinja", domain=domain, results=results, elapsed_time=elapsed_time
