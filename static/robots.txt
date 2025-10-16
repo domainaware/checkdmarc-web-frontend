@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https:/domaincheckup.net/robots.txt
+Sitemap: https:/domaincheckup.net/sitemap.xml
