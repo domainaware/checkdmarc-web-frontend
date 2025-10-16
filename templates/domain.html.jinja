@@ -1,4 +1,5 @@
-{% extends "base.html.jinja" %}
+{% extends "page.html.jinja" %}
+{% set page = 'domain' %}
 {% set title = domain ~ " - SPF, DMARC & more" %}
 {% block meta_description %}Check SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }}. Get instant results
 with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
@@ -12,14 +13,6 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
 {% endblock %}
 {% block content %}
 <main class="container" role="main">
-  <!-- Site Title -->
-  <div class="row">
-    <div class="col-12">
-      <h1 class="text-center mb-2">
-        <a href="/" class="text-decoration-none text-reset">{{ site_name }}</a>
-      </h1>
-    </div>
-  </div>
 
   <!-- Domain Header -->
   <div class="row">
