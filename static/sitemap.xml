@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
    <url>
-      <loc>https://domaincheckup.com/</loc>
+      <loc>https://domaincheckup.net/</loc>
    </url>
     <url>
-      <loc>https://domaincheckup.com/domain/example.com</loc>
+      <loc>https://domaincheckup.net/domain/example.com</loc>
    </url>
    <url>
-      <loc>https://domaincheckup.com/domain/proton.me</loc>
+      <loc>https://domaincheckup.net/domain/proton.me</loc>
    </url>
    <url>
-      <loc>https://domaincheckup.com/domain/gmail.com</loc>
+      <loc>https://domaincheckup.net/domain/gmail.com</loc>
    </url>
    <url>
-      <loc>https://domaincheckup.com/domain/yahoo.com</loc>
+      <loc>https://domaincheckup.net/domain/yahoo.com</loc>
    </url>
    <url>
-      <loc>https://domaincheckup.com/domain/change.org</loc>
+      <loc>https://domaincheckup.net/domain/change.org</loc>
    </url>
 </urlset>
