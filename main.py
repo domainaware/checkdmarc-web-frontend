@@ -127,6 +127,11 @@ def redirect_to_domain_page():
     return redirect(f"/domain/{domain}")
 
 
+@app.get("/about")
+def about():
+    return(render_template("about.html.jinja"))
+
+
 @app.route("/domain/<domain>")
 def domain(domain):
     sample_domains = [

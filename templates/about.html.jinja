@@ -1,0 +1,72 @@
+{% extends "page.html.jinja"%}
+{% set page = "about" %}
+{% set title = About %}
+{% block meta_description %}{{site_name}} is an open source website for validating DNS security controls for email, and
+it has many features that make it stand out{% endblock %}
+{% block og_title %}About | {{site_name}} {% endblock %}
+{% block og_description %}Why build another SPF/DMARC/email security validation website? I'm glad you asked.{% endblock
+%}
+{% block content %}
+<div class="row justify-content-center">
+  <h2 class="text-center">About</h2>
+</div>
+<div class="row">
+  <div class="col offset-lg-2 col-lg-8">
+    <p>Why build yet another SPF/DMARC/email security validation website? I'm glad you asked. Many such websites are
+      created by vendors as a way of pitching their product or service. {{ site_name }} is an open source website that
+      provides all information about a domain's DNS-based email security controls on one page. The <a
+        href="https://github.com/domainaware/checkdmarc-web-frontend">web frontend</a>, <a
+        href="https://github.com/domainaware/checkdmarc-web-backend">web backend</a>, and <a
+        href="https://github.com/domainaware/checkdmarc">underlying library</a> are all open source projects. So, you
+      can get a quick, helpful overview of a domain's configuration, or dive into the source code to see exactly how a
+      protocol works, <b>all without a sales pitch</b>.</p>
+    <h3>Features</h3>
+    <ul>
+      <li>Responsive, mobile-first UI using Bootstrap</li>
+      <li>Can be installed as a Progressive Web Application (PWA) on mobile devices and computers</li>
+      <li>Provides all details from the <a href="https://domainaware.github.io/checkdmarc">checkdmarc</a>
+        library and CLI tool on a single page
+        <ul>
+          <li>DNSSEC validation</li>
+          <li>SPF
+            <ul>
+              <li>Record validation</li>
+              <li>Counting of DNS lookups and void lookups</li>
+              <li>Counting of lookups per mechanism</li>
+            </ul>
+          </li>
+          <li>DMARC
+            <ul>
+              <li>Validation and parsing of DMARC records</li>
+              <li>Shows warnings when the DMARC record is made ineffective by <code>pct</code> or <code>sp</code> values
+              </li>
+              <li>Checks for authorization records on reporting email addresses</li>
+            </ul>
+          </li>
+          <li>BIMI
+            <ul>
+              <li>Validation of the mark format and certificate</li>
+              <li>Parsing of the mark certificate</li>
+            </ul>
+          </li>
+          <li>MX records
+            <ul>
+              <li>Preference</li>
+              <li>IPv4 and IPv6 addresses</li>
+              <li>Checks for STARTTLS (optional; currently disabled on the production website)</li>
+              <li>Use of DNSSEC/TLSA/DANE to pin certificates</li>
+            </ul>
+          </li>
+          <li>MTA-STS</li>
+          <li>SMTP TLS reporting
+            <ul>
+              <li>Record and policy parsing and validation</li>
+            </ul>
+          </li>
+          <li>SOA record parsing</li>
+          <li>Nameserver listing</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div {% endblock %}
