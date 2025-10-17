@@ -132,7 +132,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
               <tr class="table-danger">
                 <td>{{ mechanism.mechanism ~ ":" ~ mechanism.value }}</td>
                 <td>{{ mechanism.dns_lookups }}<span class="visually-hidden">Void DNS lookup</span></td>
-                {%else%}
+                {%elif mechanism.dns_lookups %}
               <tr>
                 <td>{{ mechanism.mechanism ~ ":" ~ mechanism.value }}</td>
                 <td>{{ mechanism.dns_lookups }}</td>
