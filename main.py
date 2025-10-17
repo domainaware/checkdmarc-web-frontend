@@ -129,7 +129,22 @@ def redirect_to_domain_page():
 
 @app.get("/about")
 def about():
-    return(render_template("about.html.jinja"))
+    return render_template("about.html.jinja")
+
+
+@app.get("/guides/bimi")
+def bimi_guide():
+    return render_template("guides/bimi.html.jinja")
+
+
+@app.get("/guides/mta-sts-and-tls-rpt")
+def mta_sts_and_tls_rpt_guide():
+    return render_template("guides/mta-sts-and-tls-rpt.html.jinja")
+
+
+@app.get("/guides/spf-dkim-and-dmarc")
+def mpf_dkim_and_dmarc_guide():
+    return render_template("guides/spf-dkim-and-dmarc.html.jinja")
 
 
 @app.route("/domain/<domain>")
