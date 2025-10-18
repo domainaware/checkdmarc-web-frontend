@@ -270,7 +270,18 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
             </thead>
             <tbody>
               {% for tag, details in results.bimi.tags.items() %}
-              {% if tag != "v" %}
+              {%if tag =="lps" %}
+              <tr>
+                <th scope="row">{{ tag }}</th>
+                <td>
+                  <ul class="list-unstyled">
+                    {% for selector in details.value %}
+                    <li>{{ selector }}</li>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tr>
+              {% elif tag != "v" %}
               <tr>
                 <th scope="row">{{ tag }}</th>
                 <td>{{ details.value }}</td>
