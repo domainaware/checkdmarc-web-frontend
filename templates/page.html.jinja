@@ -10,23 +10,23 @@
          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
             aria-labelledby="offcanvasNavbar2Label">
             <div class="offcanvas-header">
-               <h5 class="offcanvas-title" id="offcanvasNavbar2Label">>{{ site_name }}</h5> <button type="button"
+               <h5 class="offcanvas-title" id="offcanvasNavbar2Label">{{ site_name }}</h5> <button type="button"
                   class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                  <li class="nav-item"> <a class="nav-link {% if page == 'home' %}active{% endif %}" href="/">Home</a>
+                  <li class="nav-item"> <a class="nav-link{% if page == 'home' %} active{% endif %}" href="/">Home</a>
                   </li>
-                  <li class="nav-item"> <a class="nav-link {% if page == 'about' %}active{% endif %}"
+                  <li class="nav-item"> <a class="nav-link{% if page == 'about' %} active{% endif %}"
                         href="/about">About</a> </li>
-                  <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button"
+                  <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle{% if page.endswith('-guide') %} active{% endif %}" href="#" role="button"
                         data-bs-toggle="dropdown">
                         Guides
                      </a>
                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item{% if page == 'spf-dkim-and-dmarc-guide' %}active{% endif %}" href="/guides/spf-dkim-and-dmarc">SPF, DKIM & DMARC</a></li>
-                        <li><a class="dropdown-item{% if page == 'bimi-guide' %}active{% endif %}" href="/guides/bimi">BIMI</a></li>
-                        <li><a class="dropdown-item{% if page == 'mta-sts-and-tls-rpt-guide' %}active{% endif %}" href="/guides/mta-sts-and-tls-rpt">MTA-STS & T:S-RPT</a></li>
+                        <li><a class="dropdown-item{% if page == 'spf-dkim-and-dmarc-guide' %} active{% endif %}" href="/guides/spf-dkim-and-dmarc">SPF, DKIM & DMARC</a></li>
+                        <li><a class="dropdown-item{% if page == 'bimi-guide' %} active{% endif %}" href="/guides/bimi">BIMI</a></li>
+                        <li><a class="dropdown-item{% if page == 'mta-sts-and-tls-rpt-guide' %} active{% endif %}" href="/guides/mta-sts-and-tls-rpt">MTA-STS & T:S-RPT</a></li>
                         <li></li>
                      </ul>
             </div>
