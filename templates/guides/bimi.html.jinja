@@ -2,7 +2,7 @@
 {% set page = "bimi-guide" %}
 {% set title = "BIMI Guide" %}
 {% block meta_description %}A quick and simple guide to Brand Indicators for Message Identification (BIMI){% endblock %}
-{% block og_title %}BIMI Guide | {{site_name}} {% endblock %}
+{% block og_title %}A quick guide to BIMI | {{site_name}} {% endblock %}
 {% block og_description %}A quick and simple guide to Brand Indicators for Message Identification (BIMI){% endblock%}
 {% block content %}
 <div class="row justify-content-center">
@@ -10,7 +10,7 @@
 </div>
 <div class="row">
   <div class="col offset-lg-2 col-lg-8">
-    <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand images such as logos to appear in the inbox and next to the from address in supporting mailbox providers. For the brand's image to be displayed by the mailbox provider, the email from domain must have a DMARC policy of <code>quarantine</code> or <code>reject</code>, and email must pass DMARC, ensuring that the sending organization's domain has not been spoofed by an attacker. Many <a href="https://bimigroup.org/bimi-infographic/"> mailbox providers</a> support BIMI, including Google, making BIMI a "nice to have" feature for marketers and other newsletter senders. However, it does have a cost, and <a href="https://learn.microsoft.com/en-us/answers/questions/5569074/does-exchange-online-support-bimi-verification">Microsoft does not currently support displaying BIMI images</a> in its products, so BIMI might not be useful for every organization right now.</p>
+    <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand images such as logos to appear in the inbox and next to the from address in supporting mailbox providers. For the brand's image to be displayed by the mailbox provider, the email from domain must have a DMARC policy of <code>quarantine</code> or <code>reject</code>, and email must pass DMARC, ensURLng that the sending organization's domain has not been spoofed by an attacker. Many <a href="https://bimigroup.org/bimi-infographic/"> mailbox providers</a> support BIMI, including Google, making BIMI a "nice to have" feature for marketers and other newsletter senders. However, it does have a cost, and <a href="https://learn.microsoft.com/en-us/answers/questions/5569074/does-exchange-online-support-bimi-verification">Microsoft does not currently support displaying BIMI images</a> in its products, so BIMI might not be useful for every organization right now.</p>
     
     <p>BIMI is a draft standard ({{"draft-brand-indicators-for-message-identification" | link_rfc}}) maintained by the <a href="https://bimigroup.org/">BIMI Group</a>, which consists of Fastmail, Google, Mailchimp, Proofpoint, SendGrid, Validity. Valimail, and Yahoo.</p>
     
@@ -24,7 +24,7 @@
     <ul>
     <li>Instant brand recognition in the inbox</li>
     <li>Stronger visual assurance that you are who you say you are</li>
-    <li>Supported by most consumer mailbox services</li>
+    <li>Supported by most consumer mailbox providers</li>
     </ul>
 
     <h3>Drawbacks</h3>
@@ -34,7 +34,7 @@
     </ul>
 
     <h3>DNS records</h3>
-    <p>The BIMI Assertion Record is a DNS TXT record tells mailbox providers an HTTPS URL of the  image to display and optionally, an HTTPs URL to the certificate for the image. By default, the BIMI Assertion DNS record is located at the <code>default._bimi</code> subdomain. The <code>default</code> portion is a <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-selectors">selector</a>, so that organizations choose to have a different image for specific emails using the <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#bimi-selector">BIMI-Selector email header.</a> or <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-local-part-selectors">Local-Part Selectors</a>.</p>
+    <p>The BIMI Assertion Record is a DNS TXT record tells mailbox providers an HTTPS URL of the  image to display and optionally, an HTTPS URL to the certificate for the image. By default, the BIMI Assertion DNS record is located at the <code>default._bimi</code> subdomain. The <code>default</code> portion is a <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-selectors">selector</a>, so that organizations can choose to have a different image for specific emails using the <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#bimi-selector">BIMI-Selector email header.</a> or <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-local-part-selectors">Local-Part Selectors</a>.</p>
     </p> The values for the BIMI Assertion Record are <code>tag=value</code> pairs separated by semicolons.</p>
     <table class="table table-bordered table-striped">
     <caption class="visually-hidden">SPF mechanisms that require DNS lookups</caption>
@@ -46,17 +46,17 @@
     <td>v</td><td>Version (<b>Required</b>) This must have a value of <code>BIMI1</code>.</td>
     </tr>
     <tr>
-    <td>l</td><td>Location (<b>Required</b>) The HTTPS URI to the image.</td>
+    <td>l</td><td>Location (<b>Required</b>) The HTTPS URL to the image.</td>
     </tr>
     <tr>
-    <td>a</td><td>Authority Evidence Location (<b>Optional</b>) The HTTPS URI to the BIMI certificate.</td>
+    <td>a</td><td>Authority Evidence Location (<b>Optional</b>) The HTTPS URL to the BIMI certificate.</td>
     </tr>
     <tr>
     <td>lps</td><td>Local-Part-Selectors (<b>Optional</b>) A comma separated list of allowed <a href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-local-part-selectors">Local-Part Selectors</a>.</td>
     </tr>
     <tr>
     <td>avp</td><td>Avatar Preference (<b>Optional</b>)
-    <p>For mail sent to those mailbox providers that both participate in BIMI and support the display of personal avatars, this flag is a way for the Domain Owner to express its preference as to whether to show the BIMI logo or the personal avatar.</p>
+    <p>For mail sent to those mailbox providers that both participate in BIMI and support the display of personal avatars (e.g., address book or directory images), this flag is a way for the Domain Owner to express its preference as to whether to show the BIMI logo or the personal avatar.</p>
     <p>Possible values: <code>avatar</code> and <code>brand</code> (Default: <code>brand</code>)</p></td>
     </tr>
     </tbody>
