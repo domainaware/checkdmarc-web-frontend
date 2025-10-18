@@ -76,9 +76,9 @@ Reporting (TLS-RPT) {% endblock%}
         mx: backupmx.example.com
         max_age: 604800
       </pre>
+       <p>Start out with a policy in <code>testing</code> mode, and monitor TLS reporting (discussed below) for any legitimate failures. If no such failures are found, change the <code>mode</code> in the policy file to <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record.</p>
     </div>
     </p>
-    <p>Start out with a policy in <code>testing</code> mode, and monitor TLS reporting (discussed below) for any legitimate failures. If no such failures are found, change the <code>mode</code> in the policy file to <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record.</p>
     <h2 class="text-center">SMTP TLS Reporting (TLS-RPT)</h2>
   </div>
   <div class="row">
