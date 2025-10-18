@@ -220,11 +220,8 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       <div class="p-3 pt-0">
         <div class="intro mb-3">
           <h4 class="text-center">BIMI</h4>
-          <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that enables the
-            use of brand-controlled logos within supporting email clients. For the brand's logo to be displayed, the
-            email must pass DMARC authentication checks, ensuring that the organization's domain has not been
-            impersonated. </p>
-          <p><a href="https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
+          <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand images such as logos to appear in the inbox and next to the from address in supporting mailbox providers.</p>
+          <p><a href="/guides/bimi">Learn more about how BIMI works</a>.</p>
         </div> <!-- End intro -->
         {% if results.bimi.error %}
         {% if "A BIMI record does not exist" in results.bimi.error %}
