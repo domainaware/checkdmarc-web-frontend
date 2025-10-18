@@ -448,7 +448,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>SMTP MTA Strict Transport Security (MTA-STS) provides a way for domain owners to tell email services that
             they should only send email to the domain over a verified TLS connection to specific email servers. This
             prevent man-in-the-middle attacks.</p>
-          <p><a href="/guides/mta-sts-and-tlsrpt">Learn more about MTA-STS</a>.</p>
+          <p><a href="/guides/mta-sts-and-tlsrpt#mta-sts">Learn more about MTA-STS</a>.</p>
         </div> <!-- End intro -->
         {% if results.mta_sts.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -511,11 +511,10 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       <div class="p-3 pt-0">
         <div class="intro mb-3">
           <h4 class="text-center">TLSRPT</h4>
-          <p>SMTP TLS Reporting (TLSRPT) is a reporting mechanism and format by which sending systems can share
-            statistics and specific information about potential failures to establish encrypted channels with recipient
-            domains. Recipient domains can then use this information to both detect potential attacks and diagnose
-            unintentional misconfigurations.</p>
-          <p>SMTP TLS Reporting is defined in {{ "RFC 8460" | link_rfc }}.</p>
+          <p>SMTP TLS Reporting (TLSRPT) is a mechanism for sending email servers
+          to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
+          domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks.</p>
+          <p><a href="/guides/mta-sts-and-tlsrpt#tlsrpt"</p>
         </div> <!-- End intro -->
         {% if results.smtp_tls_reporting.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">

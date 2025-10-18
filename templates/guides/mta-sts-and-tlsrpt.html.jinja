@@ -8,7 +8,7 @@ Reporting (TLSRPT){% endblock %}
 Reporting (TLSRPT){% endblock%}
 {% block content %}
 <div class="row justify-content-center">
-  <h2 class="text-center">SMTP MTA Strict Transport Security (MTA-STS)</h2>
+  <h2 class="text-center" id="mta-sts">SMTP MTA Strict Transport Security (MTA-STS)</h2>
   <div class="row">
     <div class="col offset-lg-2 col-lg-8">
       <p>SMTP MTA Strict Transport Security (MTA-STS) (defined in {{ "RFC 8461"|link_rfc }}) provides a way for
@@ -91,12 +91,12 @@ Reporting (TLSRPT){% endblock%}
       </div>
     </div>
     </p>
-    <h2 class="text-center">SMTP TLS Reporting (TLSRPT)</h2>
+    <h2 class="text-center" id="tlsrpt">SMTP TLS Reporting (TLSRPT)</h2>
   </div>
   <div class="row">
     <div class="col offset-lg-2 col-lg-8">
       <p>SMTP TLS Reporting (TLSRPT) is a mechanism (defined in {{ "RFC 8460" | link_rfc }}) for sending email servers
-        to provide statistics to to domain owners about failures to establish TLS connections for SMTP. This allows
+        to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
         domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
         open source DMARC parsing providers also support parsing TLSRPT reports, including <a
           href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a>.</p>
