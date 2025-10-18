@@ -15,7 +15,7 @@ Reporting (TLSRPT){% endblock%}
         domain owners to tell email services that they should only send email to their domain over a verified TLS
         connection to specific email servers. This prevents man-in-the-middle attacks, similar to how <a
           href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HTTP Strict Transport Security (HSTS)</a>
-        works for web servers. With MTA-STS, the use of TLS can be enforced for incoming email from services that
+        works for web servers. With MTA-STS, the use of TLS can be enforced for incoming email from servers that
         support MTA-TLS without disabling port 25 and breaking applications that use <a
           href="https://en.wikipedia.org/wiki/Opportunistic_TLS">STARTTLS opportunistic encryption</a> to send email.</p>
       <p>Deployment of MTA-STS consists of a TXT DNS record, and a policy file hosted at a specific HTTPS URL. The TXT
