@@ -12,7 +12,6 @@ from flask import Flask, redirect, render_template, request, url_for
 
 from filters.rfc_links import link_rfc
 
-
 ZERO_WIDTH_RE = re.compile(r"[\u200B-\u200D\uFEFF]")  # includes ZWSP, ZWNJ, ZWJ, BOM
 
 load_dotenv()
@@ -137,9 +136,9 @@ def bimi_guide():
     return render_template("guides/bimi.html.jinja")
 
 
-@app.get("/guides/mta-sts-and-tls-rpt")
+@app.get("/guides/mta-sts-and-tlsrpt")
 def mta_sts_and_tls_rpt_guide():
-    return render_template("guides/mta-sts-and-tls-rpt.html.jinja")
+    return render_template("guides/mta-sts-and-tlsrpt.html.jinja")
 
 
 @app.get("/guides/spf-dkim-and-dmarc")

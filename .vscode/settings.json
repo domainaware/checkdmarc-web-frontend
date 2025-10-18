@@ -25,6 +25,7 @@
     "STARTTLS",
     "stylesheet",
     "TLSA",
+    "TLSRPT",
     "urlset",
     "Valimail",
     "venv",

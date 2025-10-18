@@ -19,14 +19,18 @@
                   </li>
                   <li class="nav-item"> <a class="nav-link{% if page == 'about' %} active{% endif %}"
                         href="/about">About</a> </li>
-                  <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle{% if page.endswith('-guide') %} active{% endif %}" href="#" role="button"
-                        data-bs-toggle="dropdown">
+                  <li class="nav-item dropdown"> <a
+                        class="nav-link dropdown-toggle{% if page.endswith('-guide') %} active{% endif %}" href="#"
+                        role="button" data-bs-toggle="dropdown">
                         Guides
                      </a>
                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item{% if page == 'spf-dkim-and-dmarc-guide' %} active{% endif %}" href="/guides/spf-dkim-and-dmarc">SPF, DKIM & DMARC</a></li>
-                        <li><a class="dropdown-item{% if page == 'bimi-guide' %} active{% endif %}" href="/guides/bimi">BIMI</a></li>
-                        <li><a class="dropdown-item{% if page == 'mta-sts-and-tls-rpt-guide' %} active{% endif %}" href="/guides/mta-sts-and-tls-rpt">MTA-STS & TLS-RPT</a></li>
+                        <li><a class="dropdown-item{% if page == 'spf-dkim-and-dmarc-guide' %} active{% endif %}"
+                              href="/guides/spf-dkim-and-dmarc">SPF, DKIM & DMARC</a></li>
+                        <li><a class="dropdown-item{% if page == 'bimi-guide' %} active{% endif %}"
+                              href="/guides/bimi">BIMI</a></li>
+                        <li><a class="dropdown-item{% if page == 'mta-sts-and-tlsrpt-guide' %} active{% endif %}"
+                              href="/guides/mta-sts-and-tlsrpt">MTA-STS & TLSRPT</a></li>
                         <li></li>
                      </ul>
             </div>

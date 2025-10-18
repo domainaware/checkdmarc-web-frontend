@@ -1,23 +1,23 @@
 {% extends "page.html.jinja"%}
-{% set page = "mta-sts-and-tls-rpt-guide" %}
-{% set title = "MTA-STS and TLS-RPT Guide" %}
+{% set page = "mta-sts-and-tlsrpt-guide" %}
+{% set title = "MTA-STS and TLSRPT Guide" %}
 {% block meta_description %}A quick and simple guide to SMTP MTA Strict Transport Security (MTA-STS) and SMTP TLS
-Reporting (TLS-RPT){% endblock %}
-{% block og_title %}MTA-STS & TLS-RPT Guide | {{site_name}} {% endblock %}
+Reporting (TLSRPT){% endblock %}
+{% block og_title %}MTA-STS & TLSRPT Guide | {{site_name}} {% endblock %}
 {% block og_description %}A quick and simple guide to SMTP MTA Strict Transport Security (MTA-STS) and SMTP TLS
-Reporting (TLS-RPT) {% endblock%}
+Reporting (TLSRPT) {% endblock%}
 {% block content %}
 <div class="row justify-content-center">
   <h2 class="text-center">SMTP MTA Strict Transport Security (MTA-STS)</h2>
   <div class="row">
     <div class="col offset-lg-2 col-lg-8">
-      <p>SMTP MTA Strict Transport Security (MTA-STS) is defined in {{ "RFC 8461"|link_rfc }} and provides a way for
+      <p>SMTP MTA Strict Transport Security (MTA-STS) (defined in {{ "RFC 8461"|link_rfc }}) provides a way for
         domain owners to tell email services that they should only send email to their domain over a verified TLS
         connection to specific email servers. This prevents man-in-the-middle attacks, similar to how <a
           href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HTTP Strict Transport Security (HSTS)</a>
         works for web servers. With MTA-STS, the use of TLS can be enforced for incoming email from services that
         support MTA-TLS without disabling port 25 and breaking applications that use <a
-          href="https://en.wikipedia.org/wiki/Opportunistic_TLS">opportunistic TLS</a> to send email.</p>
+          href="https://en.wikipedia.org/wiki/Opportunistic_TLS">STARTTLS opportunistic encryption</a> to send email.</p>
       <p>Deployment of MTA-STS consists of a TXT DNS record, and a policy file hosted at a specific HTTPS URL. The TXT
         DNS record must be located at the subdomain <code>_mta-sts</code>. In must start with <code>v=STSv1;</code>, and
         include a unique alphanumeric ID. The ID is used to track policy updates to senders can see if a policy has
@@ -39,7 +39,7 @@ Reporting (TLS-RPT) {% endblock%}
               <ul>
                 <li><code>enforce</code>: In this mode, Sending mail servers <b>must not</b> deliver the email to hosts
                   that fail MX matching or certificate validation or that do not support <code>STARTTLS</code>.</li>
-                <li><code>testing</code>: In this mode, sending email servers that support TLS-RPT should send a failure
+                <li><code>testing</code>: In this mode, sending email servers that support TLSRPT should send a failure
                   report and deliver then the email as normal.</li>
                 <li><code>none</code>: In this mode, Sending email servers should treat the domain as though it does not
                   have any active policy.</li>
@@ -86,15 +86,71 @@ Reporting (TLS-RPT) {% endblock%}
         <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record.
       </p>
       <div class="alert alert-info text-center" role="alert">
-        <b>Note:</b> Subdomains do not inherit MTA-TLS policies from their parent domain ({{"RFC 8461 § 3.4" | link_rfc}}). Any email subdomains must be configured separately.
+        <b>Note:</b> Subdomains do not inherit MTA-TLS policies from their parent domain ({{"RFC 8461 § 3.4" |
+        link_rfc}}). Any email subdomains must be configured separately.
       </div>
     </div>
     </p>
-    <h2 class="text-center">SMTP TLS Reporting (TLS-RPT)</h2>
+    <h2 class="text-center">SMTP TLS Reporting (TLSRPT)</h2>
   </div>
   <div class="row">
     <div class="col offset-lg-2 col-lg-8">
-      <p>Placeholder text</p>
+      <p>SMTP TLS Reporting (TLSRPT) is a mechanism (defined in {{ "RFC 8460" | link_rfc }}) for sending email servers
+        to provide statistics to to domain owners about failures to establish TLS connections for SMTP. This allows
+        domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
+        open source DMARC parsing providers also support parsing TLSRPT reports, including <a
+          href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a>.</p>
+      <p>Tto set up TLSRPT, simply publish a TLSRPT policy as a DNS TXT record at the subdomain <code>_smtp._tls</code>.
+        Like DMARC and MTA-STS DNS records, this DNS record consists of <code>tag=value</code> pairs, separated by semicolons.</p>
+        <table class="table table-bordered table-striped table-sm">
+          <caption class="visually-hidden">A table of TLSRPT policy tags and descriptions</caption>
+          <tbody>
+            <tr>
+              <th scope="row">v</th>
+              <td>Version (<b>Required</b>) This tag must be first and value must be <code>TLSRPT1</code>.</td>
+            </tr>
+            <tr>
+            <th scope="row">rua</th>
+            <td>(<b>Required</b>) A comma separated list of email addresses (prefixed with <code>mailto:</code>) and/or HTTPS URLs to send reports to.</td>  
+            </tr>
+          </tbody>
+        </table>
+        <p>Here is the schema of a TLSRPT report.</p>
+        <pre>
+ {
+   "organization-name": organization-name,
+   "date-range": {
+     "start-datetime": date-time,
+     "end-datetime": date-time
+   },
+   "contact-info": email-address,
+   "report-id": report-id,
+   "policies": [{
+     "policy": {
+       "policy-type": policy-type,
+       "policy-string": policy-string,
+       "policy-domain": domain,
+       "mx-host": mx-host-pattern
+     },
+     "summary": {
+       "total-successful-session-count": total-successful-session-count,
+       "total-failure-session-count": total-failure-session-count
+     },
+     "failure-details": [
+       {
+         "result-type": result-type,
+         "sending-mta-ip": ip-address,
+         "receiving-mx-hostname": receiving-mx-hostname,
+         "receiving-mx-helo": receiving-mx-helo,
+         "receiving-ip": receiving-ip,
+         "failed-session-count": failed-session-count,
+         "additional-information": additional-info-uri,
+         "failure-reason-code": failure-reason-code
+         }
+       ]
+     }
+   ]
+        </pre>
     </div>
   </div>
   {% endblock %}
