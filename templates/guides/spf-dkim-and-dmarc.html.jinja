@@ -1,8 +1,8 @@
 {% extends "page.html.jinja"%}
 {% set page = "spf-dkim-and-dmarc-guide" %}
-{% set title = "BIMI Guide" %}
+{% set title = "A quick guide to SPF, DKIM, and DMARC" %}
 {% block meta_description %}A quick and simple guide to Sender Policy Framework (SPF), DomainKeys Identified Mail (DKIM), and Domain-based Message Authentication, Reporting, and Conformance (DMARC){% endblock %}
-{% block og_title %}BIMI Guide | {{site_name}} {% endblock %}
+{% block og_title %}A quick guide to SPF, DKIM, and DMARC | {{site_name}}{% endblock %}
 {% block og_description %}A quick and simple guide to SPF, DKIM, and DMARC, and how they relate to each other{% endblock%}
 {% block content %}
 <div class="row justify-content-center">
@@ -10,7 +10,13 @@
 </div>
 <div class="row">
   <div class="col offset-lg-2 col-lg-8">
-    <p>Placeholder text</p>
+    <p>SPF, DKIM, and DMARC are all methods of authenticating email. This guide is a quick overview of each of them. For a comprehensive guide, check out <a href="https://seanthegeek.net/459/demystifying-dmarc/">Demystifying DMARC: A guide to preventing email spoofing</a>.</p>
+    <h2 id="spf">Sender Policy Framework (SPF)</h2>
+    <p></p>
+    <h2 id="dkim">DomainKeys Identified Mail (DKIM)</h2>
+    <p></p>
+    <h2 id="dmarc">Domain-based Message Authentication, Reporting, and Conformance (DMARC)</h2>
+    <p></p>
   </div>
 </div>
 {% endblock %}
