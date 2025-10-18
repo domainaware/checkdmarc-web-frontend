@@ -20,7 +20,7 @@ Reporting (TLSRPT){% endblock%}
           href="https://en.wikipedia.org/wiki/Opportunistic_TLS">STARTTLS opportunistic encryption</a> to send email.</p>
       <p>Deployment of MTA-STS consists of a TXT DNS record, and a policy file hosted at a specific HTTPS URL. The TXT
         DNS record must be located at the subdomain <code>_mta-sts</code>. The record must start with <code>v=STSv1;</code>, and
-        include a unique alphanumeric ID. The ID is used to track policy updates to senders can see if a policy has
+        include a unique alphanumeric ID. The ID is used to track policy updates, so senders can see if a policy has
         changed. By convention, this is usually a timestamp. For example, <code>v=STSv1; id=20160831085700Z;</code>.</p>
       <p>The MTA-STS policy file must be located at <code>https://mta-sts.example.com/.well-known/mta-sts.txt</code>,
         replacing <code>example.com</code> with the actual domain.</p>
