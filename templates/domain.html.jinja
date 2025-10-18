@@ -443,11 +443,8 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       <div class="p-3 pt-0">
         <div class="intro mb-3">
           <h4 class="text-center">MTA-STS</h4>
-          <p>SMTP MTA Strict Transport Security (MTA-STS) is a mechanism enabling email service providers to declare
-            their ability to receive Transport Layer Security (TLS) secure SMTP connections and to specify whether
-            sending SMTP servers should refuse to deliver to MX hosts that do not offer TLS with a trusted server
-            certificate.</p>
-          <p>MTA-STS is defined in {{ "RFC 8461"| link_rfc}}.</p>
+          <p>SMTP MTA Strict Transport Security (MTA-STS) provides a way for domain owners to tell email services that they should only send email to the domain over a verified TLS connection to specific email servers. This prevent man-in-the-middle attacks.</p>
+          <p><a href="/guides/mta-sts-and-tls-rpt">Learn more about MTA-STS</a>.</p>
         </div> <!-- End intro -->
         {% if results.mta_sts.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
