@@ -16,7 +16,7 @@
     <p>An SPF record is built of of mechanisms that describe what IP addresses are allowed. Many of these mechanisms (<code>a</code>, <code>mx</code> <code>include</code>, <code>exists</code>, <code>redirect</code>, and <code>ptr</code>) require additional DNS lookups. Unfortunately, {{ "RFC 7208 section 4.6.4 "|link_rfc }} places a hard limit of 10 DNS lookups per SPF record, which while might have seemed like plenty in 2014, is often hard to stay under that limit today. There are a couple of workarounds to this problem.</p>
     <ul>
       <li>Limit the SPF includes and other lookups to the primary mail service, and services that cannot authenticate via DKIM</li>
-      <li>Offload SPF lookups to a server using <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a> so that ony one DNS lookup is ever used</li>
+      <li>Offload SPF lookups to a server using <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a> so that only one DNS lookup is ever used</li>
     </ul>
     <p>You may have spotted another problem: An attacker could use a domain and SPF record that they control in the <b>envelope from address</b>, but forge (i.e., spoof) an address in the <b>message from address</b> that the user sees.</p>
     <h2 class="text-center" id="dkim">DKIM</h2>
