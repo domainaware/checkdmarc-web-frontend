@@ -1,0 +1,156 @@
+{% extends "page.html.jinja"%}
+{% set page = "mta-sts-and-tlsrpt-guide" %}
+{% set title = "MTA-STS and TLSRPT Guide" %}
+{% block meta_description %}A quick and simple guide to SMTP MTA Strict Transport Security (MTA-STS) and SMTP TLS
+Reporting (TLSRPT){% endblock %}
+{% block og_title %}MTA-STS & TLSRPT Guide | {{site_name}} {% endblock %}
+{% block og_description %}A quick and simple guide to SMTP MTA Strict Transport Security (MTA-STS) and SMTP TLS
+Reporting (TLSRPT){% endblock%}
+{% block content %}
+<div class="row justify-content-center">
+  <h2 class="text-center" id="mta-sts">SMTP MTA Strict Transport Security (MTA-STS)</h2>
+  <div class="row">
+    <div class="col offset-lg-2 col-lg-8">
+      <p>SMTP MTA Strict Transport Security (MTA-STS) (defined in {{ "RFC 8461"|link_rfc }}) provides a way for
+        domain owners to tell email services that they should only send email to their domain over a verified TLS
+        connection to specific email servers. This prevents man-in-the-middle attacks, similar to how <a
+          href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HTTP Strict Transport Security (HSTS)</a>
+        works for web servers. With MTA-STS, the use of TLS can be enforced for incoming email from servers that
+        support MTA-TLS without disabling port 25 and breaking applications that use <a
+          href="https://en.wikipedia.org/wiki/Opportunistic_TLS">STARTTLS opportunistic encryption</a> to send email.</p>
+      <p>Deployment of MTA-STS consists of a TXT DNS record, and a policy file hosted at a specific HTTPS URL. The TXT
+        DNS record must be located at the subdomain <code>_mta-sts</code>. The record must start with <code>v=STSv1;</code>, and
+        include a unique alphanumeric ID. The ID is used to track policy updates, so senders can see if a policy has
+        changed. By convention, this is usually a timestamp. For example, <code>v=STSv1; id=20160831085700Z;</code>.</p>
+      <p>The MTA-STS policy file must be located at <code>https://mta-sts.example.com/.well-known/mta-sts.txt</code>,
+        replacing <code>example.com</code> with the actual domain.</p>
+      <p>The MTA-TLS policy file uses <code>key:value</code> pairs, one per line:</p>
+      <table class="table table-bordered table-striped table-sm">
+        <caption class="visually-hidden">A table of MTA-STS policy keys and descriptions</caption>
+        <tbody>
+          <tr>
+            <th scope="row">version</th>
+            <td>Currently, only <code>STSv1</code> is supported</td>
+          </tr>
+          <tr>
+            <th scope="row">mode</th>
+            <td>
+              <p>One of:</p>
+              <ul>
+                <li><code>enforce</code>: In this mode, Sending mail servers <b>must not</b> deliver the email to hosts
+                  that fail MX matching or certificate validation or that do not support <code>STARTTLS</code>.</li>
+                <li><code>testing</code>: In this mode, sending email servers that support TLSRPT should send a failure
+                  report and deliver then the email as normal.</li>
+                <li><code>none</code>: In this mode, Sending email servers should treat the domain as though it does not
+                  have any active policy.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">max_age</th>
+            <td>
+              <p>Max lifetime of the policy (plaintext non-negative
+                integer seconds, maximum value of <code>31557600</code>). Well-behaved clients
+                <b>should</b> cache a policy for up to this value from the last policy
+                fetch time. To mitigate the risks of attacks at policy refresh
+                time, it is expected that this value typically be in the range of
+                weeks or greater.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">mx</th>
+            <td>A pattern of allowed MX hostnames, each on its own line. <code>*</code> can be used as a wildcard, and a
+              policy file may have multiple <code>mx</code> lines. For example:
+              <pre>
+    mx: mail.example.com
+    mx: *.example.net
+    </pre>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        Here is a complete example policy file:
+      <pre>
+        version: STSv1
+        mode: enforce
+        mx: mail.example.com
+        mx: *.example.net
+        mx: backupmx.example.com
+        max_age: 604800
+      </pre>
+      <p>Start out with a policy in <code>testing</code> mode, and briefly monitor <a href="#tlsrpt">TLS reporting</a> for
+        any
+        legitimate failures. If no such failures are found, change the <code>mode</code> in the policy file to
+        <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record.
+      </p>
+      <div class="alert alert-info text-center" role="alert">
+        <b>Note:</b> Subdomains do not inherit MTA-TLS policies from their parent domain ({{"RFC 8461 § 3.4" |
+        link_rfc}}). Any email subdomains must be configured separately.
+      </div>
+    </div>
+    </p>
+    <h2 class="text-center" id="tlsrpt">SMTP TLS Reporting (TLSRPT)</h2>
+  </div>
+  <div class="row">
+    <div class="col offset-lg-2 col-lg-8">
+      <p>SMTP TLS Reporting (TLSRPT) is a mechanism (defined in {{ "RFC 8460" | link_rfc }}) for sending email servers
+        to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
+        domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
+        open source DMARC parsing providers also support parsing TLSRPT reports, including <a
+          href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a>.</p>
+      <p>Tto set up TLSRPT, simply publish a TLSRPT policy as a DNS TXT record at the subdomain <code>_smtp._tls</code>.
+        Like DMARC and MTA-STS DNS records, this DNS record consists of <code>tag=value</code> pairs separated by semicolons.</p>
+        <table class="table table-bordered table-striped table-sm">
+          <caption class="visually-hidden">A table of TLSRPT policy tags and descriptions</caption>
+          <tbody>
+            <tr>
+              <th scope="row">v</th>
+              <td>Version (<b>Required</b>) This tag must be first and value must be <code>TLSRPT1</code>.</td>
+            </tr>
+            <tr>
+            <th scope="row">rua</th>
+            <td>(<b>Required</b>) A comma separated list of email addresses (prefixed with <code>mailto:</code>) and/or HTTPS URLs to send reports to.</td>  
+            </tr>
+          </tbody>
+        </table>
+        <p>Here is the schema of a TLSRPT report.</p>
+        <pre>
+ {
+   "organization-name": organization-name,
+   "date-range": {
+     "start-datetime": date-time,
+     "end-datetime": date-time
+   },
+   "contact-info": email-address,
+   "report-id": report-id,
+   "policies": [{
+     "policy": {
+       "policy-type": policy-type,
+       "policy-string": policy-string,
+       "policy-domain": domain,
+       "mx-host": mx-host-pattern
+     },
+     "summary": {
+       "total-successful-session-count": total-successful-session-count,
+       "total-failure-session-count": total-failure-session-count
+     },
+     "failure-details": [
+       {
+         "result-type": result-type,
+         "sending-mta-ip": ip-address,
+         "receiving-mx-hostname": receiving-mx-hostname,
+         "receiving-mx-helo": receiving-mx-helo,
+         "receiving-ip": receiving-ip,
+         "failed-session-count": failed-session-count,
+         "additional-information": additional-info-uri,
+         "failure-reason-code": failure-reason-code
+         }
+       ]
+     }
+   ]
+        </pre>
+    </div>
+  </div>
+  {% endblock %}

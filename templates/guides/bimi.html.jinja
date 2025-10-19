@@ -1,0 +1,107 @@
+{% extends "page.html.jinja"%}
+{% set page = "bimi-guide" %}
+{% set title = "BIMI Guide" %}
+{% block meta_description %}A quick and simple guide to Brand Indicators for Message Identification (BIMI){% endblock %}
+{% block og_title %}A quick guide to BIMI | {{site_name}} {% endblock %}
+{% block og_description %}A quick and simple guide to Brand Indicators for Message Identification (BIMI){% endblock%}
+{% block content %}
+<div class="row justify-content-center">
+  <h2 class="text-center">A quick guide to BIMI</h2>
+</div>
+<div class="row">
+  <div class="col offset-lg-2 col-lg-8">
+    <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand images
+      such as logos to <a href="https://bimigroup.org/where-is-my-bimi-logo-displayed/">appear in the inbox and/or and
+        next to the from address</a> in supporting mailbox providers. For the brand's image to be displayed by the
+      mailbox provider, the email from domain must have a DMARC policy of <code>quarantine</code> or
+      <code>reject</code>, and the email must pass DMARC, ensURLng that the sending organization's domain has not been
+      spoofed by an attacker. Many <a href="https://bimigroup.org/bimi-infographic/"> mailbox providers</a> support
+      BIMI, including Google, making BIMI a "nice to have" feature for marketers and other newsletter senders. However,
+      it does have a cost, and <a
+        href="https://learn.microsoft.com/en-us/answers/questions/5569074/does-exchange-online-support-bimi-verification">Microsoft
+        does not currently support displaying BIMI images</a> in its products, so BIMI might not be useful for every
+      organization right now.</p>
+
+    <p>BIMI is a draft standard ({{"draft-brand-indicators-for-message-identification" | link_rfc}}) maintained by the
+      <a href="https://bimigroup.org/">BIMI Group</a>, which consists of Fastmail, Google, Mailchimp, Proofpoint,
+      SendGrid, Validity. Valimail, and Yahoo.</p>
+
+    <h3>Image format</h3>
+    <p>The BIMI image must be a <a href="https://bimigroup.org/creating-bimi-svg-logo-files/">specifically formatted</a>
+      SVG file.</p>
+
+    <h3>BIMI certificates</h3>
+    <p>Many mailbox providers (including Google) require the domain using BIMI to have a <a
+        href="https://bimigroup.org/understanding-bimi-certificate-types/">BIMI certificate</a> issued by a <a
+        href="https://bimigroup.org/vmc-issuers/">Mark Verifying Authority</a> to prove that a domain has the right to
+      use an image. That way, an attacker cannot abuse BIMI to show a brand image on a lookalike domain. These
+      certificates currently cost around $1,200/year for a Common Mark Certificate (CMC) without a registered trademark,
+      and around $1,600 per year for a Verified Mark Certificate (VMC) for registered trademarks or government seals.
+    </p>
+
+    <h3>Benefits</h3>
+    <ul>
+      <li>Instant brand recognition in the inbox</li>
+      <li>Stronger visual assurance that you are who you say you are</li>
+      <li>Supported by many consumer mailbox providers</li>
+      <li>Support by Google includes Gmail for consumers and Google Workspace business users</li>
+    </ul>
+
+    <h3>Drawbacks</h3>
+    <ul>
+      <li>Certificates must be purchased</li>
+      <li>Current lack of support by Microsoft leaves out a large market, especially B2B</li>
+    </ul>
+
+    <h3>DNS records</h3>
+    <p>The BIMI Assertion Record is a DNS TXT record tells mailbox providers an HTTPS URL of the image to display and
+      optionally, an HTTPS URL to the certificate for the image. By default, the BIMI Assertion DNS record is located at
+      the <code>default._bimi</code> subdomain. The <code>default</code> portion is a <a
+        href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-selectors">selector</a>,
+      so that organizations can choose to have a different image for specific emails using the <a
+        href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#bimi-selector">BIMI-Selector
+        email header.</a> or <a
+        href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-local-part-selectors">Local-Part
+        Selectors</a>.</p>
+    </p> The value oft he BIMI Assertion Record is made up of <code>tag=value</code> pairs separated by semicolons.</p>
+    <table class="table table-bordered table-striped">
+      <caption class="visually-hidden">SPF mechanisms that require DNS lookups</caption>
+      <thead>
+        <th scope="col">Tag</th>
+        <th scope="col">Description</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>v</td>
+          <td>Version (<b>Required</b>) This must have a value of <code>BIMI1</code>.</td>
+        </tr>
+        <tr>
+          <td>l</td>
+          <td>Location (<b>Required</b>) The HTTPS URL to the image.</td>
+        </tr>
+        <tr>
+          <td>a</td>
+          <td>Authority Evidence Location (<b>Optional</b>) The HTTPS URL to the BIMI certificate.</td>
+        </tr>
+        <tr>
+          <td>lps</td>
+          <td>Local-Part-Selectors (<b>Optional</b>) A comma separated list of allowed <a
+              href="https://datatracker.ietf.org/doc/html/draft-brand-indicators-for-message-identification#name-local-part-selectors">Local-Part
+              Selectors</a>.</td>
+        </tr>
+        <tr>
+          <td>avp</td>
+          <td>Avatar Preference (<b>Optional</b>)
+            <p>For mail sent to those mailbox providers that both participate in BIMI and support the display of
+              personal avatars (e.g., address book or directory images), this flag is a way for the Domain Owner to
+              express its preference as to whether to show the BIMI logo or the personal avatar.</p>
+            <p>Possible values: <code>avatar</code> and <code>brand</code> (Default: <code>brand</code>)</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>A domain can explicitly decline to participate in BIMI by publishing a BIMI Assertion Record with empty
+      <code>l</code> and <code>a</code> values (e.g., <code>v=BIMI1; l=; a=;</code>).</p>
+  </div>
+</div>
+{% endblock %}

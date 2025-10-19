@@ -6,6 +6,15 @@
    <url>
       <loc>https://domaincheckup.net/about</loc>
    </url>
+   <url>
+      <loc>https://domaincheckup.net/guides/spf-dkim-and-dmarc</loc>
+   </url>
+   <url>
+      <loc>https://domaincheckup.net/guides/bimi</loc>
+   </url>
+   <url>
+      <loc>https://domaincheckup.net/guides/mta-sts-and-tlsrpt</loc>
+   </url>
     <url>
       <loc>https://domaincheckup.net/domain/example.com</loc>
    </url>

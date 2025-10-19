@@ -2,23 +2,39 @@
 {% block before_content %}
 <main class="container" role="main">
    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="Offcanvas navbar large">
-      <div class="container-fluid"> <a class="navbar-brand" href="/"><h1>{{ site_name }}</h1></a> <button
-            class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
+      <div class="container-fluid"> <a class="navbar-brand" href="/">
+            <h1>{{ site_name }}</h1>
+         </a> <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2"
             aria-controls="offcanvasNavbar2" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span>
          </button>
          <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar2"
             aria-labelledby="offcanvasNavbar2Label">
             <div class="offcanvas-header">
-               <h5 class="offcanvas-title" id="offcanvasNavbar2Label">>{{ site_name }}</h5> <button type="button"
+               <h5 class="offcanvas-title" id="offcanvasNavbar2Label">{{ site_name }}</h5> <button type="button"
                   class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                  <li class="nav-item"> <a class="nav-link {% if page == 'home' %}active{% endif %}" href="/">Home</a> </li>
-                  <li class="nav-item"> <a class="nav-link {% if page == 'about' %}active{% endif %}" href="/about">About</a> </li>
-               </ul>
+                  <li class="nav-item"> <a class="nav-link{% if page == 'home' %} active{% endif %}" href="/">Home</a>
+                  </li>
+                  <li class="nav-item"> <a class="nav-link{% if page == 'about' %} active{% endif %}"
+                        href="/about">About</a> </li>
+                  <li class="nav-item dropdown"> <a
+                        class="nav-link dropdown-toggle{% if page.endswith('-guide') %} active{% endif %}" href="#"
+                        role="button" data-bs-toggle="dropdown">
+                        Guides
+                     </a>
+                     <ul class="dropdown-menu">
+                        <li><a class="dropdown-item{% if page == 'spf-dkim-and-dmarc-guide' %} active{% endif %}"
+                              href="/guides/spf-dkim-and-dmarc">SPF, DKIM & DMARC</a></li>
+                        <li><a class="dropdown-item{% if page == 'bimi-guide' %} active{% endif %}"
+                              href="/guides/bimi">BIMI</a></li>
+                        <li><a class="dropdown-item{% if page == 'mta-sts-and-tlsrpt-guide' %} active{% endif %}"
+                              href="/guides/mta-sts-and-tlsrpt">MTA-STS & TLSRPT</a></li>
+                        <li></li>
+                     </ul>
+            </div>
          </div>
-      </div>
    </nav>
    {% endblock %}
    {% block content %}{% endblock %}

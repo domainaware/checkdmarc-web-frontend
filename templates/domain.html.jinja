@@ -1,10 +1,10 @@
 {% extends "page.html.jinja" %}
 {% set page = 'domain' %}
 {% set title = domain ~ " - SPF, DMARC & more" %}
-{% block meta_description %}Check SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }}. Get instant results
+{% block meta_description %}Check SPF, DMARC, MTA-STS, TLSRPT, DNSSEC, and BIMI for {{ domain }}. Get instant results
 with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
 {% block og_title %}Domain security report for {{ domain }} | {{site_name}}{% endblock %}
-{% block og_description %}Complete analysis of SPF, DMARC, MTA-STS, TLS-RPT, DNSSEC, and BIMI for {{ domain }} by
+{% block og_description %}Complete analysis of SPF, DMARC, MTA-STS, TLSRPT, DNSSEC, and BIMI for {{ domain }} by
 {{site_name }}.{% endblock %}
 {% block head %}
 {% if not is_sample_domain %}
@@ -89,7 +89,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         {% for mechanism in results.spf.parsed.mechanisms %}
         {% if "%{" in mechanism.value %}
         <div class="alert alert-info text-center" role="alert">
-          <code>{{ mechanism.mechanism }}:{{ mechanism.value }}</code> uses SPF macros so a server (i.e., a hosted SPF
+          <code>{{ mechanism.mechanism }}:{{ mechanism.value }}</code> uses <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a> so a server (i.e., a hosted SPF
           service)
           can dynamically indicate if an IP address should be accepted in SPF validation.
         </div>
@@ -220,11 +220,10 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       <div class="p-3 pt-0">
         <div class="intro mb-3">
           <h4 class="text-center">BIMI</h4>
-          <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that enables the
-            use of brand-controlled logos within supporting email clients. For the brand's logo to be displayed, the
-            email must pass DMARC authentication checks, ensuring that the organization's domain has not been
-            impersonated. </p>
-          <p><a href="https://bimigroup.org/">Learn more about how BIMI works</a>.</p>
+          <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand
+            images such as logos to appear in the inbox and/or next to the from address in supporting mailbox providers.
+          </p>
+          <p><a href="/guides/bimi">Learn more about how BIMI works</a>.</p>
         </div> <!-- End intro -->
         {% if results.bimi.error %}
         {% if "A BIMI record does not exist" in results.bimi.error %}
@@ -446,11 +445,10 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
       <div class="p-3 pt-0">
         <div class="intro mb-3">
           <h4 class="text-center">MTA-STS</h4>
-          <p>SMTP MTA Strict Transport Security (MTA-STS) is a mechanism enabling email service providers to declare
-            their ability to receive Transport Layer Security (TLS) secure SMTP connections and to specify whether
-            sending SMTP servers should refuse to deliver to MX hosts that do not offer TLS with a trusted server
-            certificate.</p>
-          <p>MTA-STS is defined in {{ "RFC 8461"| link_rfc}}.</p>
+          <p>SMTP MTA Strict Transport Security (MTA-STS) provides a way for domain owners to tell email services that
+            they should only send email to the domain over a verified TLS connection to specific email servers. This
+            prevent man-in-the-middle attacks.</p>
+          <p><a href="/guides/mta-sts-and-tlsrpt#mta-sts">Learn more about MTA-STS</a>.</p>
         </div> <!-- End intro -->
         {% if results.mta_sts.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -512,12 +510,11 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
     <div class="col-lg-4">
       <div class="p-3 pt-0">
         <div class="intro mb-3">
-          <h4 class="text-center">TLS-RPT</h4>
-          <p>SMTP TLS Reporting (TLS-RPT) is a reporting mechanism and format by which sending systems can share
-            statistics and specific information about potential failures to establish encrypted channels with recipient
-            domains. Recipient domains can then use this information to both detect potential attacks and diagnose
-            unintentional misconfigurations.</p>
-          <p>SMTP TLS Reporting is defined in {{ "RFC 8460" | link_rfc }}.</p>
+          <h4 class="text-center">TLSRPT</h4>
+          <p>SMTP TLS Reporting (TLSRPT) is a mechanism for sending email servers
+          to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
+          domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks.</p>
+          <p><a href="/guides/mta-sts-and-tlsrpt#tlsrpt">Learn more about TLSRPT</a></p>
         </div> <!-- End intro -->
         {% if results.smtp_tls_reporting.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -525,7 +522,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         </div>
         {% else %}
         <div class="alert alert-success text-center mb-3" role="alert">
-          This domain has a valid TLS-RPT record.
+          This domain has a valid TLSRPT record.
         </div>
         {% for warning in results.smtp_tls_reporting.warnings %}
         <div class="alert alert-warning text-center" role="alert">
