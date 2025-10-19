@@ -11,12 +11,18 @@
 <div class="row">
   <div class="col offset-lg-2 col-lg-8">
     <p>SPF, DKIM, and DMARC are all methods of authenticating email. This guide is a quick overview of each of them. For a comprehensive guide, check out <a href="https://seanthegeek.net/459/demystifying-dmarc/">Demystifying DMARC: A guide to preventing email spoofing</a>.</p>
-    <h2 id="spf">Sender Policy Framework (SPF)</h2>
-    <p></p>
-    <h2 id="dkim">DomainKeys Identified Mail (DKIM)</h2>
-    <p></p>
-    <h2 id="dmarc">Domain-based Message Authentication, Reporting, and Conformance (DMARC)</h2>
-    <p></p>
+    <h2 class="text-center" id="spf">SPF</h2>
+    <p>Published in April 2014 as {{ "RFC 7208"|link_rfc }} Sender Policy Framework (SPF) is an early method of email authentication that is still in use today despite its many shortcomings. There are two email from addresses. One is known as the <b>envelope from address</b>, which is the address used by the sending email server in the SMTP <code>HELO</code>/<code>EHLO</code> commands. This address is used for receiving bounceback emails. The other from address is the <b>message from address</b>, which is in the email message <code>From</code> header. That is the from address that the user sees when they open an email. SPF compares the IP address of the server that sent an email against a list of permitted IP addresses provided in the SPF record at the domain of the <b>envelope from address</b>.</p>
+    <p>An SPF record is built of of mechanisms that describe what IP addresses are allowed. Many of these mechanisms (<code>a</code>, <code>mx</code> <code>include</code>, <code>exists</code>, <code>redirect</code>, and <code>ptr</code>) require additional DNS lookups. Unfortunately, {{ "RFC 7208 § 4.6.4 "|link_rfc }} places a hard limit of 10 DNS lookups per SPF record, which while might have seen like plenty in 2014, is often hard to stay under today. There are a couple of workarounds to this problem.</p>
+    <ul>
+      <li>Limit the SPF includes and other lookups to the primary mail service, and services that cannot authenticate via DKIM</li>
+      <li>Offload SPF lookups to a server using <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a></li>
+    </ul>
+    <p>Ypu may already spot another problem: An attacker could use a domain and SPF record that they control in the <b>envelope from address</b>, but forge (i.e., spoof) an address in the <b>message from address</b> that the user sees.</p>
+    <h2 class="text-center" id="dkim">DKIM</h2>
+    <p>DomainKeys Identified Mail (DKIM)</p>
+    <h2 class="text-center" id="dmarc">DMARC</h2>
+    <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC)</p>
   </div>
 </div>
 {% endblock %}

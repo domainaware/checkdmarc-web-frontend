@@ -11,6 +11,7 @@
   "editor.formatOnSave": true,
   "cSpell.words": [
     "BIMI",
+    "bounceback",
     "DNSSEC",
     "domaincheckup",
     "dotenv",
