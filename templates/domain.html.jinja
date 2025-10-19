@@ -37,8 +37,8 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>DNSSEC provides a way to ensure that the DNS answers a client is receiving from a DNS resolver are
             correct
             and have not been tampered with. DNSSEC must be configured at the domain's registrar and nameservers.</p>
-          <p><a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/">Learn more about how
-              DNSSEC works</a>.</p>
+          <p><a href="https://www.cloudflare.com/learning/dns/dnssec/how-dnssec-works/">Learn more about
+              DNSSEC</a>.</p>
         </div>
         {% if results.dnssec %}
         <div class="alert alert-success text-center mb-3" role="alert">
@@ -154,7 +154,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <h4 class="text-center">DMARC</h4>
           <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) ensures that the SPF and DKIM
             authentication mechanisms actually authenticate against the same base domain that the end user sees.</p>
-          <p><a href="/guides/spf-dkim-and-dmarc/">Learn more about how DMARC works</a>.</p>
+          <p><a href="/guides/spf-dkim-and-dmarc/">Learn more about DMARC</a>.</p>
         </div> <!-- End intro -->
         {% if results.dmarc.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -223,7 +223,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand
             images such as logos to appear in the inbox and/or next to the from address in supporting mailbox providers.
           </p>
-          <p><a href="/guides/bimi">Learn more about how BIMI works</a>.</p>
+          <p><a href="/guides/bimi">Learn more about BIMI</a>.</p>
         </div> <!-- End intro -->
         {% if results.bimi.error %}
         {% if "A BIMI record does not exist" in results.bimi.error %}
@@ -514,7 +514,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>SMTP TLS Reporting (TLSRPT) is a mechanism for sending email servers
           to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
           domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks.</p>
-          <p><a href="/guides/mta-sts-and-tlsrpt#tlsrpt">Learn more about TLSRPT</a></p>
+          <p><a href="/guides/mta-sts-and-tlsrpt#tlsrpt">Learn more about TLSRPT</a>.</p>
         </div> <!-- End intro -->
         {% if results.smtp_tls_reporting.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
