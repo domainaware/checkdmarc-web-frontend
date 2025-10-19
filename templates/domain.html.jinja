@@ -60,7 +60,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <p>Sender Policy Framework (SPF) authenticates email by checking the sending email server IP address against
             a list of domains provided by the SPF record of the envelope from domain. The SPF record can include other
             records, with up to 10 DNS lookups.</p>
-          <p>The SPF standard is defined in {{"RFC 7208"| link_rfc }}</a>.</p>
+          <p><a href="/guides/spf-dkim-and-dmarc">Learn more about SPF</a>.</p>
         </div>
         {% if results.spf.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
@@ -154,7 +154,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
           <h4 class="text-center">DMARC</h4>
           <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC) ensures that the SPF and DKIM
             authentication mechanisms actually authenticate against the same base domain that the end user sees.</p>
-          <p><a href="https://seanthegeek.net/459/demystifying-dmarc/">Learn more about how DMARC works</a>.</p>
+          <p><a href="/guides/spf-dkim-and-dmarc/">Learn more about how DMARC works</a>.</p>
         </div> <!-- End intro -->
         {% if results.dmarc.error %}
         <div class="alert alert-danger text-center mb-3" role="alert">
