@@ -13,16 +13,69 @@
     <p>SPF, DKIM, and DMARC are all methods of authenticating email. This guide is a quick overview of each of them. For a comprehensive guide, check out <a href="https://seanthegeek.net/459/demystifying-dmarc/">Demystifying DMARC: A guide to preventing email spoofing</a>.</p>
     <h2 class="text-center" id="spf">SPF</h2>
     <p>Published in April 2014 as {{ "RFC 7208"|link_rfc }} Sender Policy Framework (SPF) is an early method of email authentication that is still in use today despite its many shortcomings. There are two email from addresses. One is known as the <b>envelope from address</b>, which is the address used by the sending email server in the SMTP <code>HELO</code>/<code>EHLO</code> commands. This address is used for receiving bounceback emails. The other from address is the <b>message from address</b>, which is in the email message <code>From</code> header. That is the from address that the user sees when they open an email. SPF compares the IP address of the server that sent an email against a list of permitted IP addresses provided in the SPF record at the domain of the <b>envelope from address</b>.</p>
-    <p>An SPF record is built of of mechanisms that describe what IP addresses are allowed. Many of these mechanisms (<code>a</code>, <code>mx</code> <code>include</code>, <code>exists</code>, <code>redirect</code>, and <code>ptr</code>) require additional DNS lookups. Unfortunately, {{ "RFC 7208 § 4.6.4 "|link_rfc }} places a hard limit of 10 DNS lookups per SPF record, which while might have seen like plenty in 2014, is often hard to stay under that limit today. There are a couple of workarounds to this problem.</p>
+    <p>An SPF record is built of of mechanisms that describe what IP addresses are allowed. Many of these mechanisms (<code>a</code>, <code>mx</code> <code>include</code>, <code>exists</code>, <code>redirect</code>, and <code>ptr</code>) require additional DNS lookups. Unfortunately, {{ "RFC 7208 section 4.6.4 "|link_rfc }} places a hard limit of 10 DNS lookups per SPF record, which while might have seemed like plenty in 2014, is often hard to stay under that limit today. There are a couple of workarounds to this problem.</p>
     <ul>
       <li>Limit the SPF includes and other lookups to the primary mail service, and services that cannot authenticate via DKIM</li>
       <li>Offload SPF lookups to a server using <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a> so that ony one DNS lookup is ever used</li>
     </ul>
     <p>You may have spotted another problem: An attacker could use a domain and SPF record that they control in the <b>envelope from address</b>, but forge (i.e., spoof) an address in the <b>message from address</b> that the user sees.</p>
     <h2 class="text-center" id="dkim">DKIM</h2>
-    <p>DomainKeys Identified Mail (DKIM)</p>
+    <p>Published in September 2011 as {{ "RFC 6376"|link_rfc }}, DomainKeys Identified Mail (DKIM) allows sending email servers add a cryptographic signature to an email in behalf of a domain. This signature can then be verified by receiving email email server using a public key published in a DNS record at the signing domain, which validates the integrity of the email message content and key headers. Unlike SPF, DKIM verification survives message forwarding as long as the signed content has not been altered.</p>
+    <p>An email can have multiple DKIM signatures, <b>which may or may not be from the domain of the message sender</b>. Here is an example <code>DKIM-Signature</code> header in an email:</p>
+    <pre>
+    DKIM-Signature: v=1; a=rsa-sha256; d=example.com; s=s1; c=relaxed/simple; l=1234; t=1117574938; x=1118006938; h=from:to:subject:date; bh=MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=;b=dzdVyOfAKCdLXdJOc9G2q8LoXSlEniSbav+yuU4zGeeruD00lszZVoG4ZHRNiYzR
+    </pre>
+    <p>The <code>d</code> value indicates that the email is signed by <code>example.com</code>, which can be verified using the DKIM key at the <code>s1</code> selector, <code>s1._dkim.example.com</code>. Selectors are used so that different services can sign as a domain. The service provides the owners of the domain with the DKIM record to add to their domain. including a selector and public key, then the service signs those emails using the matching private key.</p>
     <h2 class="text-center" id="dmarc">DMARC</h2>
-    <p>Domain-based Message Authentication, Reporting, and Conformance (DMARC)</p>
+    <p>Published in March 2015 as as {{ "RFC 7489"|link_rfc }} Domain-based Message Authentication, Reporting, and Conformance (DMARC) provides a way for domain owners to stop unauthorized email from address spoofing by requiring that SPF or DKIM pass <b>and</b> that the domain checked aligns with the <b>message from address</b> that the user sees. DMARC also provides mechanisms for receiving email servers to send reports about email authentication results back to domain owners. Google and Yahoo now both consider DMARC a <a href="https://seanthegeek.net/1338/how-to-comply-with-google-and-yahoos-requirements-for-bulk-email-senders/">requirement for bulk sending domains</a>.</p>
+    <p>There are two types of DMARC reports: aggregate and failure (formerly called forensic reports). Aggregate reports (sometimes called rua reports) contain information about the aggregate number of emails that an email server has received containing the owner's domain in the message from address, including information about SPF and DKIM results and alignment. A domain owner should use these reports to ensure that all legitimate email senders are properly authenticated before moving from the monitor only DMARC policy, i.e. <code>p=none</code> to an enforced policy, i.e., <code>p=quarantine</code> or <code>p=reject</code>. Most receiving email services provide aggregate DMARC reports for domains that have a published DMARC record, <a href="https://seanthegeek.net/806/proofpoint-is-requiring-their-customers-to-pay-for-email-fraud-defense-to-get-aggregate-dmarc-data-from-their-own-gateways/">with the notable exception of Proofpoint</a>. Most receiving email servers do not provide DMARC failure/forensic/ruf reports for privacy reasons, because these reports contain the headers (and sometimes even the content) of  individual emails that failed DMARC alignment. The open source tool <a href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a> and many commercial services can parse these reports to provide actionable data.</p>
+    <p>DMARC policy DNS records are TXT records at the <code>_dmarc</code> subdomain, and use <code>tag=value</code> format, separated by semicolons.</p>
+
+    <table class="table table-bordered table-striped table-sm">
+      <caption class="visually-hidden">Required DMARC policy tags</caption>
+      <thead>
+        <tr><th scope="col">Tag</th><th scope="col">Description</th></tr>
+      </thead>
+      <tbody>
+      <tr><th scope="row">v</th><td>Version (<b>Required</b>) Must be the first tag. Must be <code>DMARC1</code></td></tr>
+      <tr><th scope="row">p</th><td>
+        <p>Policy (<b>Required</b>) Must be the one of the following:</p>
+        <ul class="list-unstyled">
+          <li><code>none</code>: Monitor for DMARC failures but do not enforce it</li>
+          <li><code>quarantine</code>: Treat failed emails as suspicious (e.g., place them in a spam folder)</li>
+          <li><code>reject</code>: Reject emails that fail DMARC alignment</li>
+        </ul>
+        </td></tr>
+        <tr><th scope="row">rua</th><td>(<b>Optional</b>) A comma separated list of email addresses prefixed with <code>mailto:</code> to send DMARC aggregate reports to. Only the first two addresses are required to be honored.</td></tr>
+        <tr><th scope="row">ruf</th><td>(<b>Optional</b>) A comma separated list of email addresses prefixed with <code>mailto:</code> to send DMARC failure reports to. Only the first two addresses are required to be honored.</td></tr>
+        <tr><th scope="row">sp</th><td>Subdomain Policy (<b>Optional; The default mirrors the <code>p</code> value</b>) A separate policy policy for subdomains. <b>Not recommended</b>.</td></tr>
+        <tr><th scope="row">pct</th><td>(<b>Optional; The default is <code>100</code></b>) Percentage of messages to which the DMARC policy is to be applied. <b>Not recommended</b>.</td></tr>
+        <tr><th scope="row">ri</th><td>Reporting interval (<b>Optional; The default is <code>86400</code></b>) Indicates a
+      request to Receivers to generate aggregate reports separated by no
+      more than the requested number of seconds.  DMARC implementations
+      <b>must</b> be able to provide daily reports and <b>should</b> be able to
+      provide hourly reports when requested.  However, anything other
+      than a daily report is understood to be accommodated on a best-
+      effort basis.</td></tr>
+        <tr><th scope="row">fo</th><td> <p>Failure reporting options (<b>Optional; The default is <code>0</code></b>) Provides requested options for generation of failure reports.
+      Report generators <b>may</b> choose to adhere to the requested options. The value of this tag is a colon-separated list of characters that indicate failure reporting options as follows:</p>
+      <ul class="list-unstyled">
+      <li><code>0</code>: Generate a DMARC failure report if all underlying
+         authentication mechanisms fail to produce an aligned "pass"
+         result.</li>
+      <li><code>1</code>: Generate a DMARC failure report if any underlying
+         authentication mechanism produced something other than an
+         aligned "pass" result.</li>
+     <li><code>d</code>: Generate a DKIM failure report if the message had a signature
+         that failed evaluation, regardless of its alignment.</li>
+     <li><code>s</code>:  Generate an SPF failure report if the message failed SPF
+         evaluation, regardless of its alignment.</li>
+      </ul>
+      <tr><th scope="row">rt</th><td>Report format (<b>Optional; The default is <code>afrf</code></b>) The value of this tag is a list of one or more report formats as
+      requested by the Domain Owner to be used when a message fails both SPF and DKIM. <code>afrf</code> is currently the only valid format.</td></tr>
+      </tbody>
+    </table>
+
   </div>
 </div>
 {% endblock %}
