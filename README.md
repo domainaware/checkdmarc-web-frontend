@@ -29,7 +29,8 @@ Why create or use this when there are already so many other websites that check 
     - Checks for STARTTLS (optional; currently disabled on the production website)
     - Use of DNSSEC/TLSA/DANE to pin certificates
   - MTA-STS
-  - SMTP TLS reporting
+    - Record parsing and validation
+  - SMTP TLS Reporting (TLSRPT)
     - Record and policy parsing and validation
   - SOA record parsing
   - Nameserver listing
