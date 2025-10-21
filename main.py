@@ -159,6 +159,8 @@ def domain(domain):
         "yahoo.com",
         # change.org has a valid BIMI image with a mark certificate
         "change.org",
+        # crowdstrike.com has a valid record for everything
+        "crowdstrike.com",
     ]
     is_sample_domain = domain in sample_domains
 
