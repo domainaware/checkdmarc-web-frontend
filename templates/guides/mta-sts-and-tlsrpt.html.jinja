@@ -17,7 +17,7 @@
         support MTA-TLS without disabling port 25 and breaking applications that use <a
           href="https://en.wikipedia.org/wiki/Opportunistic_TLS">STARTTLS opportunistic encryption</a> to send email.</p>
       <p>Deployment of MTA-STS consists of a TXT DNS record, and a policy file hosted at a specific HTTPS URL. The TXT
-        DNS record must be located at the subdomain <code>_mta-sts</code>. The record must start with <code>v=STSv1;</code>, and
+        DNS record must be located at the subdomain <code>_mta-sts</code>. The record must start with <code>v=STSv1;</code> and
         include a unique alphanumeric ID. The ID is used to track policy updates, so senders can see if a policy has
         changed. By convention, this is usually a timestamp. For example, <code>v=STSv1; id=20160831085700Z;</code>.</p>
       <p>The MTA-STS policy file must be located at <code>https://mta-sts.example.com/.well-known/mta-sts.txt</code>,
@@ -98,14 +98,14 @@
         domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
         open source DMARC parsing providers also support parsing TLSRPT reports, including <a
           href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a>.</p>
-      <p>Tto set up TLSRPT, simply publish a TLSRPT policy as a DNS TXT record at the subdomain <code>_smtp._tls</code>.
+      <p>To set up TLSRPT, simply publish a TLSRPT policy as a DNS TXT record at the subdomain <code>_smtp._tls</code>.
         Like DMARC and MTA-STS DNS records, this DNS record consists of <code>tag=value</code> pairs separated by semicolons.</p>
         <table class="table table-bordered table-striped table-sm">
           <caption class="visually-hidden">A table of TLSRPT policy tags and descriptions</caption>
           <tbody>
             <tr>
               <th scope="row">v</th>
-              <td>Version (<b>Required</b>) This tag must be first and value must be <code>TLSRPT1</code>.</td>
+              <td>Version (<b>Required</b>) This tag must be first and value must be <code>TLSRPTv1</code>.</td>
             </tr>
             <tr>
             <th scope="row">rua</th>
