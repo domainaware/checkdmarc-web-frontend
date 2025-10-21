@@ -91,7 +91,7 @@
       </p>
       <div class="alert alert-info text-center" role="alert">
         <b>Note:</b> Subdomains do not inherit MTA-TLS policies from their parent domain ({{"RFC 8461 § 3.4" |
-        link_rfc}}). Any email subdomains must be configured separately.
+        link_rfc}}). Any subdomains that are used to receive email have MTA-TLS configured separately.
       </div>
     </div>
     </p>
@@ -104,10 +104,16 @@
         domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
         open source DMARC parsing providers also support parsing TLSRPT reports, including <a
           href="https://domainaware.github.io/parsedmarc/">ParseDMARC</a>.</p>
+          <div class="alert alert-info text-center" role="alert">
+        <b>Note:</b> Some mail servers only send reports after failures.
+      </div>
       <p>To set up TLSRPT, simply publish a TLSRPT policy as a DNS TXT record at the subdomain <code>_smtp._tls</code>.
         Like DMARC and MTA-STS DNS records, this DNS record consists of <code>tag=value</code> pairs separated by semicolons.</p>
         <table class="table table-bordered table-striped table-sm">
           <caption class="visually-hidden">A table of TLSRPT policy tags and descriptions</caption>
+          <thead>
+          <tr><th scope="col">Tag</th><th scope="col">Description</th></tr>
+          </thead>
           <tbody>
             <tr>
               <th scope="row">v</th>
@@ -119,9 +125,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="alert alert-info text-center" role="alert">
-        <b>Note:</b> Some mail servers only send reports after failures.
-      </div>
+        
     </div>
         <p>Here is the schema of a TLSRPT report.</p>
         <pre>
