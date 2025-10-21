@@ -13,12 +13,12 @@
     <p>Brand Indicators for Message Identification (BIMI) is an emerging email specification that allows brand images
       such as logos to <a href="https://bimigroup.org/where-is-my-bimi-logo-displayed/">appear in the inbox and/or
         next to the from address</a> in supporting mailbox providers. For the brand's image to be displayed by the
-      mailbox provider, the the domain of the email's from header must have a DMARC policy of <code>quarantine</code> or
+      mailbox provider, the domain of the email's from header must have a DMARC policy of <code>quarantine</code> or
       <code>reject</code>, a <code>pct</code> value of <code>100</code> (which is the implicit default if
-      <code>pct</code> is not set), and the email must pass DMARC by having sn SPF or DKIM check align with the email's
+      <code>pct</code> is not set), and the email must pass DMARC by having an SPF or DKIM check align with the email's
       from header domain, ensuring that the sending organization's domain has not been
       spoofed by an attacker. Many <a href="https://bimigroup.org/bimi-infographic/"> mailbox providers</a> support
-      BIMI, including Google, Yahoo. Apple, Fastmail, Comcast, and others making BIMI a "nice to have" feature for marketers and other newsletter senders once the
+      BIMI, including Google, Yahoo, Apple, Fastmail, Comcast, and others making BIMI a "nice to have" feature for marketers and other newsletter senders once the
       organization's domain has an enforced DMARC policy. However,
       it does have a cost, and <a
         href="https://learn.microsoft.com/en-us/answers/questions/5569074/does-exchange-online-support-bimi-verification">Microsoft
@@ -113,7 +113,7 @@
     </table>
     <p>A domain can explicitly decline to participate in BIMI by publishing a BIMI Assertion Record with empty
       <code>l</code> and <code>a</code> values (e.g., <code>v=BIMI1; l=; a=;</code>) at the default BIMI selector
-      `defaut.
+      `default`.
     </p>
   </div>
 </div>
