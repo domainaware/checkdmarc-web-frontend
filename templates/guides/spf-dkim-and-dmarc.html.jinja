@@ -27,7 +27,7 @@ endblock%}
     <p>An SPF record is built of mechanisms that describe what IP addresses are allowed. Many of these mechanisms
       (<code>a</code>, <code>mx</code> <code>include</code>, <code>exists</code>, <code>redirect</code>, and
       <code>ptr</code>) require additional DNS lookups. Unfortunately, {{ "RFC 7208 section 4.6.4 "|link_rfc }} places a
-      hard limit of 10 DNS lookups per SPF record. Although 10 lookups might have seemed like plenty in 2014, is often
+      hard limit of 10 DNS lookups per SPF record. Although 10 lookups might have seemed like plenty in 2014, it is often
       hard to stay under that limit today. There are a couple of workarounds to this problem.</p>
     <ul>
       <li>Limit the SPF includes and other lookups to the primary mail service, and services that cannot authenticate
@@ -166,7 +166,7 @@ endblock%}
             <p>DKIM alignment</p>
             <ul>
               <li><code>r</code>: Relaxed (<b>Default</b>): Organizational domain match</li>
-              <li><code>s</code>: Strict<: FQDN match</li>
+              <li><code>s</code>: Strict: FQDN match</li>
             </ul>
           </td>
         </tr>
@@ -176,7 +176,7 @@ endblock%}
             <p>SPF alignment</p>
             <ul>
               <li><code>r</code>: Relaxed (<b>Default</b>): Organizational domain match</li>
-              <li><code>s</code>: Strict<: FQDN match</li>
+              <li><code>s</code>: Strict: FQDN match</li>
             </ul>
           </td>
         </tr>
