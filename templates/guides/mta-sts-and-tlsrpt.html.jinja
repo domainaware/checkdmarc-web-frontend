@@ -11,7 +11,7 @@
     <div class="col offset-lg-2 col-lg-8">
       <p>SMTP MTA Strict Transport Security (MTA-STS) (defined in {{ "RFC 8461"|link_rfc }}) provides a way for
         domain owners to tell email services that they should only send email to their domain over a verified TLS
-        connection to specific email servers. This prevents man-in-the-middle attacks, similar to how <a
+        connection to specific email servers. This prevents man-in-the-middle attacks if the sending server supports the standard and the policy is set to <code>enforce</code>, similar to how <a
           href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HTTP Strict Transport Security (HSTS)</a>
         works for web servers. With MTA-STS, the use of TLS can be enforced for incoming email from servers that
         support MTA-TLS without disabling port 25 and breaking applications that use <a
@@ -25,6 +25,12 @@
       <p>The MTA-TLS policy file uses <code>key:value</code> pairs, one per line:</p>
       <table class="table table-bordered table-striped table-sm">
         <caption class="visually-hidden">A table of MTA-STS policy keys and descriptions</caption>
+        <thead>
+        <tr>
+        <th scope="col">Key</th>
+        <th scope="col">Description</th>
+        </tr>
+        </thead>
         <tbody>
           <tr>
             <th scope="row">version</th>
@@ -48,7 +54,7 @@
             <th scope="row">max_age</th>
             <td>
               <p>Max lifetime of the policy (plaintext non-negative
-                integer seconds, maximum value of <code>31557600</code>). Well-behaved clients
+                integer seconds, maximum value of <code>31557600</code>, which is about one year). Well-behaved clients
                 <b>should</b> cache a policy for up to this value from the last policy
                 fetch time. To mitigate the risks of attacks at policy refresh
                 time, it is expected that this value typically be in the range of
@@ -58,7 +64,7 @@
           </tr>
           <tr>
             <th scope="row">mx</th>
-            <td>A pattern of allowed MX hostnames, each on its own line. <code>*</code> can be used as a wildcard, and a
+            <td>A pattern of allowed MX hostnames, each on its own line. A single <code>*</code> can be used as a wildcard on the left side for subdomains, and a
               policy file may have multiple <code>mx</code> lines. For example:
               <pre>
     mx: mail.example.com
@@ -78,10 +84,10 @@
         mx: backupmx.example.com
         max_age: 604800
       </pre>
-      <p>Start out with a policy in <code>testing</code> mode, and briefly monitor <a href="#tlsrpt">TLS reporting</a> for
+      <p>Start out with a policy in <code>testing</code> mode, use this website to validate the policy, and briefly monitor <a href="#tlsrpt">TLS reporting</a> for
         any
         legitimate failures. If no such failures are found, change the <code>mode</code> in the policy file to
-        <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record.
+        <code>enforce</code>, and update the <code>id</code> value in the <code>_mta-sts</code> TXT DNS record. The <code>id</code> value must be updated after any change, such as modifying <code>mx</code> values in the policy.
       </p>
       <div class="alert alert-info text-center" role="alert">
         <b>Note:</b> Subdomains do not inherit MTA-TLS policies from their parent domain ({{"RFC 8461 § 3.4" |
@@ -93,7 +99,7 @@
   </div>
   <div class="row">
     <div class="col offset-lg-2 col-lg-8">
-      <p>SMTP TLS Reporting (TLSRPT, though often called TLS-RPT) is a mechanism (defined in {{ "RFC 8460" | link_rfc }}) for sending email servers
+      <p>SMTP TLS Reporting (Referred to in the spec as TLSRPT, though often called TLS-RPT elsewhere) is a mechanism (defined in {{ "RFC 8460" | link_rfc }}) for sending email servers
         to provide statistics to domain owners about failures to establish TLS connections for SMTP. This allows
         domain owners to proactively identify TLS misconfigurations and man-in-the-middle attacks. Many commercial and
         open source DMARC parsing providers also support parsing TLSRPT reports, including <a
@@ -109,10 +115,14 @@
             </tr>
             <tr>
             <th scope="row">rua</th>
-            <td>(<b>Required</b>) A comma separated list of email addresses (prefixed with <code>mailto:</code>) and/or HTTPS URLs to send reports to.</td>  
+            <td>(<b>Required</b>) A comma separated list of email addresses (prefixed with <code>mailto:</code>) and/or HTTPS URLs to send reports to. Note: some providers recommend using <code>mailto:</code> rather than <code>HTTPS</code> for easier authentication.</td>
             </tr>
           </tbody>
         </table>
+        <div class="alert alert-info text-center" role="alert">
+        <b>Note:</b> Some mail servers only send reports after failures.
+      </div>
+    </div>
         <p>Here is the schema of a TLSRPT report.</p>
         <pre>
  {
@@ -148,6 +158,7 @@
        ]
      }
    ]
+ }
         </pre>
     </div>
   </div>
