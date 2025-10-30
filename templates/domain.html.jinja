@@ -91,7 +91,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <div class="alert alert-info text-center" role="alert">
           <code>{{ mechanism.mechanism }}:{{ mechanism.value }}</code> uses <a href="https://datatracker.ietf.org/doc/html/rfc7208#section-7">SPF macros</a> so a server (i.e., a hosted SPF
           service)
-          can dynamically indicate if an IP address should be accepted in SPF validation.
+          can dynamically indicate if an IP address should pass SPF.
         </div>
         {% endif %}
         {% endfor %}
