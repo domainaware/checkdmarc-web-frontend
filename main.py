@@ -28,7 +28,7 @@ for var in required_env_vars:
     if var not in os.environ:
         missing_env_vars.append(var)
 if len(missing_env_vars):
-    print(f"Error: Missing required environment variables {",".join(missing_env_vars)}")
+    print(f"Error: Missing required environment variables {','.join(missing_env_vars)}")
     exit(1)
 
 site_name = os.environ["SITE_NAME"]
