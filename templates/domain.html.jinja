@@ -165,11 +165,10 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <div class="alert alert-success text-center mb-3" role="alert">
           This domain has a {{ results.dmarc.tags.p.value }} DMARC policy.
         </div>
-        {% else %}
+        {% endif %}
         {% for warning in results.dmarc.warnings %}
         <div class="alert alert-warning text-center mb-3" role="alert">{{ warning|link_rfc }}</div>
         {% endfor %}
-        {% endif %}
         {% if results.dmarc.record %}
         <p>Record: <code>{{ results.dmarc.record }}</code>
           {% if results.dmarc.location %}

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Always show DMARC warnings
+
 ## 1.0.2
 
 - Fix BIMI success message being shown when a BIMI image error occurs
