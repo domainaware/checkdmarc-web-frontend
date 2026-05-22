@@ -160,7 +160,7 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
         <div class="alert alert-danger text-center mb-3" role="alert">
           {{ results.dmarc.error|link_rfc }}
         </div>
-        {% elif results.dmarc.valid and results.dmarc.tags.pct.value == 100 and results.dmarc.tags.p.value in
+        {% elif results.dmarc.valid and results.dmarc.tags.t.value == "n" and results.dmarc.tags.p.value in
         ["reject","quarantine"] and results.dmarc.tags.sp.value in ["reject","quarantine"] %}
         <div class="alert alert-success text-center mb-3" role="alert">
           This domain has a {{ results.dmarc.tags.p.value }} DMARC policy.
