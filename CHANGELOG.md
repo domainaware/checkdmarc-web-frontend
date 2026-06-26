@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5
+
+- Display BIMI image validation errors on separate lines
+
 ## 1.0.4
 
 - Fix template error on new versions of `checkdmarc` by checking the DMARC record for `t=n` instead of `pct=100`

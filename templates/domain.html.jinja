@@ -306,7 +306,12 @@ with clear, RFC-based guidance — free from {{ site_name }}.{% endblock %}
               {% for key, value in results.bimi.image.items() %}
               <tr>
                 <th scope="row">{{ key }}</th>
-                <td>{{ value }}</td>
+                <td>
+                  {% if value is sequence and value is not string %}
+                  {% for item in value %}{{ item }}{% if not loop.last %}<br>
+                  {% endif %}{% endfor %}
+                  {% else %}{{ value }}{% endif %}
+                </td>
               </tr>
               {% endfor %}
             </tbody>
